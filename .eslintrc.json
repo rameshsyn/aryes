@@ -12,7 +12,7 @@
   "rules": {
     "global-require": "off",
     "consistent-return": "off",
-    "react/prop-types": "off", // ES7+ Class properties not supported by Airbnb's eslint rules,
+    "react/prop-types": "off",
     "react/no-danger": "off",
     "array-callback-return": "off"
   },
