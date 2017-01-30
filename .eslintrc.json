@@ -14,7 +14,8 @@
     "consistent-return": "off",
     "react/prop-types": "off",
     "react/no-danger": "off",
-    "array-callback-return": "off"
+    "array-callback-return": "off",
+    "semi": "off",
   },
   "plugins": [
     "babel",
