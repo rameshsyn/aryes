@@ -10,13 +10,12 @@ const config = {
   entry: {
     main: env === 'production' ? [
       'babel-polyfill',
-      './scripts'
+      './'
     ] : [
       'babel-polyfill',
       'webpack-hot-middleware/client',
-      './scripts'
-    ],
-    style: './styles/style.scss'
+      './'
+    ]
   },
   output: {
     path: join(__dirname, 'build'),
@@ -49,7 +48,7 @@ const config = {
         ]
       }, {
         test: /(\.s?css)$/,
-        loader: env === 'production' ? ExtractTextPlugin.extract('style-loader', 'css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'sass-loader') : ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'sass-loader')
+        loader: env === 'production' ? ExtractTextPlugin.extract('style-loader', 'css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'sass-loader') : 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass-loader'
       }, {
         test: /\.(jpe?g|png|svg)$/,
         loader: 'file-loader?name=/assets/images/[name].[ext]'
@@ -78,7 +77,6 @@ const config = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin('scripts/commons.js'),
-    new ExtractTextPlugin('styles/[name].css'),
     new webpack.DefinePlugin({ 'process.env': {
       NODE_ENV: JSON.stringify(env)
     } })

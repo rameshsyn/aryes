@@ -1,32 +1,32 @@
-const { resolve, join } = require('path');
-const webpack = require('webpack');
-const ExternalsPlugin = require('webpack-externals-plugin');
+const { resolve, join } = require('path')
+const webpack = require('webpack')
+const ExternalsPlugin = require('webpack-externals-plugin')
 
 const config = {
   entry: [
-    './server',
+    './server'
   ],
   output: {
     path: join(__dirname, 'build'),
     filename: 'scripts/server.bundle.js',
-    publicPath: '/static/',
+    publicPath: '/static/'
   },
   devtool: 'source-map',
   target: 'async-node',
   node: {
     __filename: true,
-    __dirname: true,
+    __dirname: true
   },
   resolve: {
     extensions: [
       '',
       '.js',
-      '.jsx',
+      '.jsx'
     ],
     modules: [
       './server',
-      'node_modules',
-    ],
+      'node_modules'
+    ]
   },
   module: {
     loaders: [
@@ -35,21 +35,21 @@ const config = {
         include: resolve(__dirname, 'server'),
         exclude: /node_modules/,
         loaders: [
-          'babel-loader',
-        ],
+          'babel-loader'
+        ]
       }, {
         test: /\.json$/,
-        loader: 'json-loader',
-      },
-    ],
+        loader: 'json-loader'
+      }
+    ]
   },
   plugins: [
     new webpack.IgnorePlugin(/\.(css|sass|scss|less)$/),
     new ExternalsPlugin({
       type: 'commonjs',
-      include: join(__dirname, '/node_modules/'),
-    }),
-  ],
-};
+      include: join(__dirname, '/node_modules/')
+    })
+  ]
+}
 
-module.exports = config;
+module.exports = config

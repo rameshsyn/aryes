@@ -1,11 +1,10 @@
-import React from 'react';
+import React from 'react'
 
 const Home = () => (
-  <div className="message">
+  <div>
     <h1>| Aryes |</h1>
     <p>An Educational Institution management system</p>
   </div>
-  );
+  )
 
-
-export default Home;
+export default Home
