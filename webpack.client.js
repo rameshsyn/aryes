@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 
 const config = {
-  devtool: env === 'production' ? 'source-map' : 'eval',
+  devtool: env === 'production' ? 'source-map' : 'inline-source-map',
   context: resolve(__dirname, 'client'),
   entry: {
     main: env === 'production' ? [
@@ -33,7 +33,11 @@ const config = {
     modules: [
       'client',
       'node_modules'
-    ]
+    ],
+    alias: {
+      animate: resolve(__dirname, 'node_modules/animate.css/animate.css'),
+      fontAwesome: resolve(__dirname, 'node_modules/font-awesome/css/font-awesome.css')
+    }
   },
   module: {
     loaders: [

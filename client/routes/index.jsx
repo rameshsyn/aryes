@@ -1,10 +1,36 @@
 import React from 'react'
-import { Router, Route, browserHistory } from 'react-router'
-import Home from '../components'
+import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { syncHistoryWithStore } from 'react-router-redux'
+import store from '../reducers'
+import {
+  Home,
+  Dashboard,
+  Management,
+  Accounting,
+  Student,
+  Session,
+  Staff,
+  Inquiry,
+  Income,
+  Expediture
+  } from '../components'
 
 const Routes = () => (
-  <Router history={browserHistory}>
-    <Route path='/' component={Home} />
+  <Router history={syncHistoryWithStore(browserHistory, store)}>
+    <Route path='/' component={Home}>
+      <IndexRoute component={Dashboard} />
+      <Route path='/dashboard' component={Dashboard} />
+      <Route path='/management' component={Management}>
+        <Route path='/management/student' component={Student} />
+        <Route path='/management/session' component={Session} />
+        <Route path='/management/staff' component={Staff} />
+        <Route path='/management/inquiry' component={Inquiry} />
+      </Route>
+      <Route path='/accounting' component={Accounting}>
+        <Route path='/accounting/income' component={Income} />
+        <Route path='/accounting/expediture' component={Expediture} />
+      </Route>
+    </Route>
   </Router>
 )
 

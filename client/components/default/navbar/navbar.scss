@@ -1,0 +1,16 @@
+.wrapper {
+  text-align: center;
+  color: white;
+  display: flex;
+  height: 60px;
+}
+
+.shortcuts {
+  background: gray;
+  flex: 1;
+}
+
+.search {
+  background: #444;
+  flex: 2;
+}
