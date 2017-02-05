@@ -1,3 +1,6 @@
+
+// Store -> Single Source of truth
+
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { browserHistory } from 'react-router'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
@@ -18,6 +21,8 @@ const store = createStore(
   )
 )
 
+
+// Hot Reload 
 if (module.hot) {
   module.hot.accept('./index', () => {
     store.replaceReducer(rootReducer())

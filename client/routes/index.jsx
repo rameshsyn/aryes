@@ -1,3 +1,6 @@
+
+// Routes
+
 import React from 'react'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
@@ -12,7 +15,7 @@ import {
   Staff,
   Inquiry,
   Income,
-  Expediture
+  Expenditure
   } from '../components'
 
 const Routes = () => (
@@ -28,7 +31,7 @@ const Routes = () => (
       </Route>
       <Route path='/accounting' component={Accounting}>
         <Route path='/accounting/income' component={Income} />
-        <Route path='/accounting/expediture' component={Expediture} />
+        <Route path='/accounting/expenditure' component={Expenditure} />
       </Route>
     </Route>
   </Router>
