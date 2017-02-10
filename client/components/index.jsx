@@ -8,6 +8,8 @@ import Staff from './management/staff'
 import Student from './management/student'
 import Expenditure from './accounting/expenditure'
 import Income from './accounting/income'
+import Room from './management/room'
+import Service from './service'
 
 export {
   Home,
@@ -19,5 +21,7 @@ export {
   Staff,
   Student,
   Expenditure,
-  Income
+  Income,
+  Room,
+  Service
 }

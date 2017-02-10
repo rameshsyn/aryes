@@ -46,10 +46,12 @@ class Sidebar extends Component {
               <i className={`${menuIcon} fa ${this.state.subMenuMngOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
             </div>
             <ul className={`${subMenu} ${this.state.subMenuMngOn ? subMenuOn : subMenuOff}`}>
-              <li className={subMenuItems} onClick={() => this.props.push('/management/student')}>Students</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/management/session')}>Sessions</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/management/staff')}>Staffs</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/management/inquiry')}>Inquiries</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/management/student')}>Student</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/management/session')}>Session</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/management/staff')}>Staff</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/management/inquiry')}>Inquiry</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/management/room')}>Room</li>
+
             </ul>
           </li>
           <li>
@@ -61,6 +63,12 @@ class Sidebar extends Component {
               <li className={subMenuItems} onClick={() => this.props.push('/accounting/income')}>Income</li>
               <li className={subMenuItems} onClick={() => this.props.push('/accounting/expenditure')}>Expenditure</li>
             </ul>
+          </li>
+          <li>
+            <div className={menuItems}>
+              <b className={menuTitle} onClick={() => this.props.push('/service')}>Service </b>
+              <i className={menuIcon} />
+            </div>
           </li>
         </ul>
       </div>

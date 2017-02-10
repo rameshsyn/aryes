@@ -15,7 +15,9 @@ import {
   Staff,
   Inquiry,
   Income,
-  Expenditure
+  Expenditure,
+  Room,
+  Service
   } from '../components'
 
 const Routes = () => (
@@ -28,11 +30,13 @@ const Routes = () => (
         <Route path='/management/session' component={Session} />
         <Route path='/management/staff' component={Staff} />
         <Route path='/management/inquiry' component={Inquiry} />
+        <Route path='/management/room' component={Room} />
       </Route>
       <Route path='/accounting' component={Accounting}>
         <Route path='/accounting/income' component={Income} />
         <Route path='/accounting/expenditure' component={Expenditure} />
       </Route>
+      <Route path='/service' component={Service} />
     </Route>
   </Router>
 )
