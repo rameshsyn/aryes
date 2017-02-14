@@ -4,7 +4,7 @@
 import React from 'react'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import store from '../reducers'
+import { store } from '../reducers'
 import {
   Home,
   Dashboard,
@@ -17,7 +17,9 @@ import {
   Income,
   Expenditure,
   Room,
-  Service
+  Service,
+  Product,
+  Offer
   } from '../components'
 
 const Routes = () => (
@@ -36,7 +38,10 @@ const Routes = () => (
         <Route path='/accounting/income' component={Income} />
         <Route path='/accounting/expenditure' component={Expenditure} />
       </Route>
-      <Route path='/service' component={Service} />
+      <Route path='/service' component={Service}>
+        <Route path='/service/product' component={Product} />
+        <Route path='/service/offer' component={Offer} />
+      </Route>
     </Route>
   </Router>
 )

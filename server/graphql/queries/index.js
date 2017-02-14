@@ -10,10 +10,12 @@ import {
 
 // Get particular query types
 import sessionQuery from './management/session_query'
+import offerQuery from './service/offer_query'
 
 // Get types
 import {
-  SessionType
+  SessionType,
+  OfferType
 } from '../types'
 
 // hold all imports
@@ -29,8 +31,10 @@ const builtInTypes = {
 
 // Send custom and built in types to query types
 const SessionQuery = sessionQuery(SessionType, builtInTypes)
+const OfferQuery = offerQuery(OfferType, builtInTypes)
 
 // Make available all the query types a single object
 export default {
-  ...SessionQuery
+  ...SessionQuery,
+  ...OfferQuery
 }

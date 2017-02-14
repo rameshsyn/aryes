@@ -1,8 +1,8 @@
 import React from 'react'
-import { Provider } from 'react-redux'
 import { render } from 'react-dom'
+import { ApolloProvider } from 'react-apollo'
 import Routes from './routes'
-import store from './reducers'
+import { store, client } from './reducers'
 
 // Sanitize CSS - CSS Base
 import '../node_modules/sanitize.css/sanitize.css'
@@ -11,9 +11,9 @@ import '../node_modules/sanitize.css/sanitize.css'
 if (module.hot) module.hot.accept()
 
 const Main = () => (
-  <Provider store={store}>
+  <ApolloProvider client={client} store={store}>
     <Routes />
-  </Provider>
+  </ApolloProvider>
 )
 
 render(<Main />, document.getElementById('app'))

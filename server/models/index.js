@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
-mongoose.connect('mongodb://localhost:27017/aryes')
 
+// Configuration
+import config from '../config'
+
+// mongoose schemas
 import student from './management/student'
 import session from './management/session'
 import inquiry from './management/inquiry'
@@ -11,8 +14,13 @@ import service from './service/service_info'
 import institution from './institution/institution_info'
 import admin from './admin/admin'
 
-// use native promises
+// MongoDB connection
+mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
+
+// Use native promises
 mongoose.Promise = global.Promise
+
+// Pass mongoose to all schemas
 const Student = student(mongoose)
 const Session = session(mongoose)
 const Inquiry = inquiry(mongoose)
@@ -51,12 +59,15 @@ const Admin = admin(mongoose)
 // })
 
 // new Offer({
-//   name: 'initial payment',
-//   discount: 25
+//   code: 'CONNECTION',
+//   discount: 60,
+//   date_created: Date.now(),
+//   active: false,
+//   description: 'An offer for a relative'
 // }).save((err) => {
 //   if (err) throw err
 //   console.log('saved')
-// })
+//  })
 
 // new Staff({
 //   name: 'ramesh',

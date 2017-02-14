@@ -10,6 +10,8 @@ import Expenditure from './accounting/expenditure'
 import Income from './accounting/income'
 import Room from './management/room'
 import Service from './service'
+import Product from './service/product'
+import Offer from './service/offer'
 
 export {
   Home,
@@ -23,5 +25,7 @@ export {
   Expenditure,
   Income,
   Room,
-  Service
+  Service,
+  Product,
+  Offer
 }

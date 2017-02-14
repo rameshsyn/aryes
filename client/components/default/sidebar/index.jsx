@@ -19,7 +19,8 @@ class Sidebar extends Component {
     super()
     this.state = {
       subMenuMngOn: false,
-      subMenuAcOn: false
+      subMenuAcOn: false,
+      subMenuSerOn: false
     }
   }
   subMenuOnOff (subMenu) {
@@ -65,10 +66,14 @@ class Sidebar extends Component {
             </ul>
           </li>
           <li>
-            <div className={menuItems}>
-              <b className={menuTitle} onClick={() => this.props.push('/service')}>Service </b>
-              <i className={menuIcon} />
+            <div className={menuItems} onClick={() => this.subMenuOnOff('subMenuSerOn')}>
+              <b className={menuTitle} onClick={() => this.props.push('/service')}>Service</b>
+              <i className={`${menuIcon} fa ${this.state.subMenuAcOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
             </div>
+            <ul className={`${subMenu} ${this.state.subMenuSerOn ? subMenuOn : subMenuOff}`}>
+              <li className={subMenuItems} onClick={() => this.props.push('/service/product')}>Product</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/service/offer')}>Offer</li>
+            </ul>
           </li>
         </ul>
       </div>

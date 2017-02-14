@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-// import compression from 'compression';
+import compression from 'compression'
 import expressReactViews from 'express-react-views'
 import morgan from 'morgan'
 import { join } from 'path'
@@ -48,14 +48,14 @@ app.engine('jsx', expressReactViews.createEngine({
 
 // Middlewares
 
-// app.use(compression({ level: 9, threshold: 0, filter: () => true }));
+app.use(compression({ level: 9, threshold: 0, filter: () => true }))
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({ limit: '1mb', extended: false }))
 app.use('/static', express.static('./build'))
 
 // Routes
 
-app.use('*', routes)
+app.use('/', routes)
 
 // Server Listening ...
 app.listen(port, (err) => {

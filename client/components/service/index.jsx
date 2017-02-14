@@ -1,8 +1,11 @@
 import React from 'react'
 
-const Service = () => {
+const Service = ({children}) => {
+  const fallBack = <h1>Hello, This is a Service section</h1>
   return (
-    <h1>This is service Section</h1>
+    <div>
+      {children ? children : fallBack}
+    </div>
   )
 }
 

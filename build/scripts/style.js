@@ -1,1 +1,0 @@
-!(function (e) { function t (s) { if (r[s]) return r[s].exports; var o = r[s] = {exports: {}, id: s, loaded: !1}; return e[s].call(o.exports, o, o.exports, t), o.loaded = !0, o.exports } var r = {}; return t.m = e, t.c = r, t.p = '/static', t(0) }([function (e, t) { e.exports = {message: 'style__message___1fj4W'} }]))
