@@ -2,22 +2,21 @@ import { Offer } from '../../../models'
 
 export default function (offerType, { GraphQLString, GraphQLList }) {
   return {
-    offer: {
-      type: new GraphQLList(offerType),
+    addNewOffer: {
+      type: offerType,
       args: {
-        id: {
-          type: GraphQLString
-        }
+        ...offerType.getFields()
       },
       resolve: (root, params, options) => {
-        // find offer as argument if argument is specified
-        const query = params.id ? { _id: params.id } : {}
+        const offer = params
+        offer.date_created = Date.now()
+        offer.active = true
         return new Promise((resolve, reject) => {
-          Offer.find(query, (err, offer) => {
+          new Offer(offer).save((err, user) => {
             if (err) {
               reject(err)
             } else {
-              resolve(offer)
+              resolve(user)
             }
           })
         })

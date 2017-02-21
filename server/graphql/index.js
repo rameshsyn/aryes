@@ -15,10 +15,10 @@ export default new GraphQLSchema({
     description: 'A root query',
     fields: queries
   }),
-  // mutation: new GraphQLObjectType({
-  //   name: 'RootMutation',
-  //   description: 'A root mutation'
-  //   fields: mutations
-  // })
+  mutation: new GraphQLObjectType({
+    name: 'RootMutation',
+    description: 'A root mutation',
+    fields: mutations
+  })
 })
 
