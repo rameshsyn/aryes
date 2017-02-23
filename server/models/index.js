@@ -1,18 +1,18 @@
 import mongoose from 'mongoose'
 
 // Configuration
-import config from '../config'
+import config from '../config/index.json'
 
 // mongoose schemas
-import student from './management/student'
-import session from './management/session'
-import inquiry from './management/inquiry'
-import room from './management/room'
-import staff from './management/staff'
-import offer from './service/offer'
-import service from './service/service_info'
-import institution from './institution/institution_info'
-import admin from './admin/admin'
+import student from '../management/student_model'
+import session from '../management/session_model'
+import inquiry from '../management/inquiry_model'
+import room from '../management/room_model'
+import staff from '../management/staff_model'
+import offer from '../service/offer_model'
+import service from '../service/service_info_model'
+import institution from '../institution/institution_info_model'
+import admin from '../admin/admin_model'
 
 // MongoDB connection
 mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
@@ -30,6 +30,39 @@ const Offer = offer(mongoose)
 const Service = service(mongoose)
 const Institution = institution(mongoose)
 const Admin = admin(mongoose)
+
+// import mongoose from 'mongoose'
+
+// // Configuration
+// import config from '../config'
+
+// // mongoose schemas
+// import student from './management/student'
+// import session from './management/session'
+// import inquiry from './management/inquiry'
+// import room from './management/room'
+// import staff from './management/staff'
+// import offer from './service/offer'
+// import service from './service/service_info'
+// import institution from './institution/institution_info'
+// import admin from './admin/admin'
+
+// // MongoDB connection
+// mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
+
+// // Use native promises
+// mongoose.Promise = global.Promise
+
+// // Pass mongoose to all schemas
+// const Student = student(mongoose)
+// const Session = session(mongoose)
+// const Inquiry = inquiry(mongoose)
+// const Room = room(mongoose)
+// const Staff = staff(mongoose)
+// const Offer = offer(mongoose)
+// const Service = service(mongoose)
+// const Institution = institution(mongoose)
+// const Admin = admin(mongoose)
 
 // new Institution({
 //   name: 'fdsf',

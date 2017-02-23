@@ -4,10 +4,13 @@ export default function (mongoose) {
     name: String,
     contact: [{
       email: String,
-      phone: String,
-      social_links: [String]
+      phone: String
     }],
-    location: String
+    location: String,
+    sevice_category: [{
+      name: String,
+      description: String
+    }]
   })
   return mongoose.model('institution', InstitutionSchema)
 }

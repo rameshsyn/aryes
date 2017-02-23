@@ -4,21 +4,29 @@ import {
 } from 'graphql'
 
 // Get all graphQL Query types
-import queries from './queries'
+import InstitutionQuery from '../institution/institution_info_query'
+import OfferQuery from '../service/offer_query'
+import SessionQuery from '../management/session_query'
 
 // Get all graphQL mutation types
-import mutations from './mutations'
+import OfferMutation from '../service/offer_mutation'
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQuery',
     description: 'A root query',
-    fields: queries
+    fields: {
+      ...SessionQuery,
+      ...InstitutionQuery,
+      ...OfferQuery
+    }
   }),
   mutation: new GraphQLObjectType({
     name: 'RootMutation',
     description: 'A root mutation',
-    fields: mutations
+    fields: {
+      ...OfferMutation
+    }
   })
 })
 
