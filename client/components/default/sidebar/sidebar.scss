@@ -12,8 +12,9 @@
 /* Main */
 .wrapper {
   background: pink;
-  height: 400px;
+  height: auto;
   display: flex;
+  width: 200px;
   flex-direction: column;
 }
 

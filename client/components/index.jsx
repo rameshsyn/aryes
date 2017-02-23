@@ -12,6 +12,10 @@ import Room from './management/room'
 import Service from './service'
 import Product from './service/product'
 import Offer from './service/offer'
+import Setting from './setting'
+import Customization from './setting/customization'
+import General from './setting/general'
+import Profile from './setting/profile'
 
 export {
   Home,
@@ -27,5 +31,9 @@ export {
   Room,
   Service,
   Product,
-  Offer
+  Offer,
+  Setting,
+  Customization,
+  General,
+  Profile
 }

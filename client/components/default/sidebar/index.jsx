@@ -20,7 +20,8 @@ class Sidebar extends Component {
     this.state = {
       subMenuMngOn: false,
       subMenuAcOn: false,
-      subMenuSerOn: false
+      subMenuSerOn: false,
+      suMenuSetOn: false
     }
   }
   subMenuOnOff (subMenu) {
@@ -52,7 +53,6 @@ class Sidebar extends Component {
               <li className={subMenuItems} onClick={() => this.props.push('/management/staff')}>Staff</li>
               <li className={subMenuItems} onClick={() => this.props.push('/management/inquiry')}>Inquiry</li>
               <li className={subMenuItems} onClick={() => this.props.push('/management/room')}>Room</li>
-
             </ul>
           </li>
           <li>
@@ -68,11 +68,22 @@ class Sidebar extends Component {
           <li>
             <div className={menuItems} onClick={() => this.subMenuOnOff('subMenuSerOn')}>
               <b className={menuTitle} onClick={() => this.props.push('/service')}>Service</b>
-              <i className={`${menuIcon} fa ${this.state.subMenuAcOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
+              <i className={`${menuIcon} fa ${this.state.subMenuSerOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
             </div>
             <ul className={`${subMenu} ${this.state.subMenuSerOn ? subMenuOn : subMenuOff}`}>
               <li className={subMenuItems} onClick={() => this.props.push('/service/product')}>Product</li>
               <li className={subMenuItems} onClick={() => this.props.push('/service/offer')}>Offer</li>
+            </ul>
+          </li>
+          <li>
+            <div className={menuItems} onClick={() => this.subMenuOnOff('subMenuSetOn')}>
+              <b className={menuTitle} onClick={() => this.props.push('/setting')}>Setting</b>
+              <i className={`${menuIcon} fa ${this.state.subMenuSetOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
+            </div>
+            <ul className={`${subMenu} ${this.state.subMenuSetOn ? subMenuOn : subMenuOff}`}>
+              <li className={subMenuItems} onClick={() => this.props.push('/setting/profile')}>Profile</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/setting/general')}>General</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/setting/customization')}>Customization</li>
             </ul>
           </li>
         </ul>

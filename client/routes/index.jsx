@@ -19,7 +19,11 @@ import {
   Room,
   Service,
   Product,
-  Offer
+  Offer,
+  Setting,
+  Customization,
+  General,
+  Profile
   } from '../components'
 
 const Routes = () => (
@@ -41,6 +45,11 @@ const Routes = () => (
       <Route path='/service' component={Service}>
         <Route path='/service/product' component={Product} />
         <Route path='/service/offer' component={Offer} />
+      </Route>
+      <Route path='/setting' component={Setting}>
+        <Route path='/setting/profile' component={Profile} />
+        <Route path='/setting/general' component={General} />
+        <Route path='/setting/customization' component={Customization} />
       </Route>
     </Route>
   </Router>
