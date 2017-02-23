@@ -12,7 +12,14 @@ const client = new ApolloClient({
 
   // use desired name of apollo reducer
   reduxRootSelector: 'aryesData',
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' })
+  addTypename: true,
+  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
+  dataIdFromObject: (result) => {
+    if (result.id && result.__typename) {
+      return result.__typename + result.id
+    }
+    return null
+  }
 })
 
 const rootReducer = combineReducers({

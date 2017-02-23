@@ -2,21 +2,23 @@ import React, { Component } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Loading from '../../utils/loading'
-import { wrapper, offer } from './offer.scss'
+// import { wrapper, offer } from './offer.scss'
+// import update from 'immutability-helper'
+import {
+  Grid
+} from 'semantic-ui-react'
 
 class Offer extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      offers: props.data.offer,
       code: '',
       discount: 0,
       description: ''
     }
   }
   displayOffers () {
-    this.props.data.refetch()
-    const offers = this.state.offers || this.props.data.offer
+    const offers = this.props.data.offer
     return offers.map((ofr, i) => {
       return (
         <tr key={i} id={ofr.id}>
@@ -42,14 +44,30 @@ class Offer extends Component {
         code: this.state.code,
         description: this.state.description,
         discount: this.state.discount
+      },
+      updateQueries: {
+        getOffers: (prevQuery, newQuery) => {
+          const newOffer = newQuery.mutationResult.data.addNewOffer
+          // const test = update(prevQuery, {
+          //   offer: {
+          //     $unshift: [newOffer]
+          //   }
+          // })
+          return {
+            offer: [
+              ...prevQuery.offer,
+              newOffer
+            ]
+          }
+        }
       }
     })
     .then(({ data }) => {
-      const offers = this.state.offers || this.props.data.offer
-      const newOffer = data.addNewOffer
-      this.setState({
-        offers: [...offers, newOffer]
-      })
+      // const offers = this.props.data.offer
+      // const newOffer = data.addNewOffer
+      // this.setState({
+      //   offers: [...offers, newOffer]
+      // })
       console.log('got data', data)
     })
     .catch((error) => {
@@ -61,8 +79,8 @@ class Offer extends Component {
       return <Loading />
     }
     return (
-      <div>
-        <div>
+      <Grid>
+        <Grid.Row color='yellow'>
           <label htmlFor='code'>Code</label>
           <input type='text' onChange={this.handleChange.bind(this)} name='code' id='code' style={{ background: 'gray' }} /> <br />
           <label htmlFor='discount'>Discount</label>
@@ -70,8 +88,8 @@ class Offer extends Component {
           <label htmlFor='description'>Description</label>
           <textarea type='text' onChange={this.handleChange.bind(this)} name='description' id='description' style={{ background: 'gray' }} /><br />
           <button type='button' onClick={this.addOffer.bind(this)} style={{ background: 'gold' }}>Add</button>
-        </div>
-        <div>
+        </Grid.Row>
+        <Grid.Row>
           <table>
             <thead>
               <tr>
@@ -86,8 +104,8 @@ class Offer extends Component {
               {this.displayOffers()}
             </tbody>
           </table>
-        </div>
-      </div>
+        </Grid.Row>
+      </Grid>
     )
   }
 }
@@ -106,42 +124,32 @@ class Offer extends Component {
 // `
 
 const offerQuery = gql`
-  query getOffers {
-    offer {
-      id
-      code
-      description
-      date_created
-      discount
-      active
-    }
+query getOffers {
+  offer {
+    id
+    code
+    description
+    date_created
+    discount
+    active
   }
+}
 `
 const offerMutation = gql`
-   mutation addNewOffer($code: String, $description: String, $discount: Int ) {
-    addNewOffer(code: $code, description: $description, discount: $discount) {
-      id
-      code
-      description
-      date_created
-      discount
-      active
-    }
+mutation addNewOffer($code: String, $description: String, $discount: Int ) {
+  addNewOffer(code: $code, description: $description, discount: $discount) {
+    id
+    code
+    description
+    date_created
+    discount
+    active
   }
+}
 `
 
 export default compose(
   graphql(offerQuery),
-  // graphql(getAOffer, {
-  //   name: 'offer',
-  //   options: () => {
-  //     return {
-  //       variables: {
-  //         id: '58abd9b76504a769a7fc4ba8'
-  //       }
-  //     }
-  //   }
-  // }),
   graphql(offerMutation, {
     name: 'addNewOffer'
   })
