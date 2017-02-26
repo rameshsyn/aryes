@@ -3,33 +3,29 @@ export default function (mongoose) {
   const StudentSchema = new Schema({
     basic_info: {
       name: {
-        type: String,
-        required: true
+        type: String
       },
       address: String,
-      school_name: String,
+      school: String,
       academic_level: String
     },
     contact_info: {
-      phone_num: {
-        type: String,
-        required: true
+      phone: {
+        type: String
       },
       email: String
     },
     enrollment_info: {
       date: {
-        type: Date,
-        required: true
+        type: String
       },
-      services: [{
-        service_id: String
+      products: [{
+        type: Schema.Types.ObjectId,
+        ref: 'product'
       }],
       sessions: [{
-        session_id: String
-      }],
-      rooms: [{
-        room_id: String
+        type: Schema.Types.ObjectId,
+        ref: 'session'
       }]
     },
     payment_info: {
@@ -38,7 +34,10 @@ export default function (mongoose) {
         date: Date,
         amount: Number
       }],
-      offers: [String],
+      offers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'offer'
+      }],
       discount: Number
     }
   })

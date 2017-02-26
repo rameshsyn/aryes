@@ -4,15 +4,16 @@ import mongoose from 'mongoose'
 import config from '../config/index.json'
 
 // mongoose schemas
-import student from '../management/student_model'
-import session from '../management/session_model'
-import inquiry from '../management/inquiry_model'
-import room from '../management/room_model'
-import staff from '../management/staff_model'
+import student from '../management/student/student_model'
+import session from '../management/session/session_model'
+import inquiry from '../management/inquiry/inquiry_model'
+import room from '../management/room/room_model'
+import staff from '../management/staff/staff_model'
 import offer from '../service/offer_model'
-import service from '../service/service_info_model'
+import product from '../service/product_model'
 import institution from '../institution/institution_info_model'
 import admin from '../admin/admin_model'
+import serviceCat from '../institution/service_category_model'
 
 // MongoDB connection
 mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
@@ -27,9 +28,10 @@ const Inquiry = inquiry(mongoose)
 const Room = room(mongoose)
 const Staff = staff(mongoose)
 const Offer = offer(mongoose)
-const Service = service(mongoose)
+const Product = product(mongoose)
 const Institution = institution(mongoose)
 const Admin = admin(mongoose)
+const ServiceCat = serviceCat(mongoose)
 
 // import mongoose from 'mongoose'
 
@@ -149,18 +151,21 @@ const Admin = admin(mongoose)
 
 // new Student({
 //   basic_info: {
-//     name: 'ramesh syangtan',
+//     name: 'Ram ram',
 //     address: 'bhaktapur',
 //     school_name: 'sanothimi',
 //     academic_level: 'bachelor'
 //   },
 //   contact_info: {
-//     phone_num: '9843578426',
+//     phone: '9843578426',
 //     email: 'rameshsyangtan92@gmail.com'
 //   },
 //   enrollment_info: {
 //     date: Date.now(),
-//     services: [],
+//     products: [{
+//       _id: '58b05210dee9bd102e4afe49'
+//     }
+//     ],
 //     sessions: [],
 //     rooms: []
 //   },
@@ -170,7 +175,9 @@ const Admin = admin(mongoose)
 //       date: Date.now(),
 //       amount: 1200
 //     }],
-//     offers: [],
+//     offers: [
+//       '58a2bc48cadf395a92d37cbc'
+//     ],
 //     discount: 0
 //   }
 // }).save((err) => {
@@ -185,7 +192,8 @@ export {
   Room,
   Staff,
   Offer,
-  Service,
+  Product,
   Institution,
-  Admin
+  Admin,
+  ServiceCat
 }

@@ -4,7 +4,11 @@ export default function (mongoose) {
     name: String,
     contact: String,
     salary: [{
-      service_id: String,
+      product_id: {
+        type: Schema.Types.ObjectId,
+        ref: 'product'
+      },
+      date: Date,
       amount: Number
     }],
     position: String

@@ -1,5 +1,5 @@
 import { Offer } from '../models'
-import { OfferType } from '../graphql/types'
+import OfferType from './offer_type'
 
 export default {
   addNewOffer: {
@@ -8,15 +8,15 @@ export default {
       ...OfferType.getFields()
     },
     resolve: (root, params, options) => {
-      const offer = params
-      offer.date_created = Date.now()
-      offer.active = true
+      const newOffer = params
+      newOffer.date_created = Date.now()
+      newOffer.active = true
       return new Promise((resolve, reject) => {
-        new Offer(offer).save((err, user) => {
+        new Offer(newOffer).save((err, offer) => {
           if (err) {
             reject(err)
           } else {
-            resolve(user)
+            resolve(offer)
           }
         })
       })

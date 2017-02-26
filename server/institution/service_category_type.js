@@ -4,9 +4,12 @@ import {
 } from 'graphql'
 
 export default new GraphQLObjectType({
-  name: 'service_category_info',
+  name: 'service_category',
   description: 'Category Information',
   fields: {
+    id: {
+      type: GraphQLString
+    },
     name: {
       type: GraphQLString,
       description: 'Name of Category'

@@ -88,10 +88,10 @@
 	
 	if (process.env.NODE_ENV === 'development') {
 	  // Webpack Hot reload
-	  var webpack = __webpack_require__(29);
-	  var webpackConfig = __webpack_require__(30);
-	  var webpackDevMiddleware = __webpack_require__(32);
-	  var webpackHotMiddleware = __webpack_require__(33);
+	  var webpack = __webpack_require__(40);
+	  var webpackConfig = __webpack_require__(41);
+	  var webpackDevMiddleware = __webpack_require__(43);
+	  var webpackHotMiddleware = __webpack_require__(44);
 	  var compiler = webpack(webpackConfig);
 	  app.use(webpackDevMiddleware(compiler, {
 	    publicPath: webpackConfig.output.publicPath,
@@ -227,15 +227,15 @@
 	  value: true
 	});
 	
-	var _graphql = __webpack_require__(11);
+	var _extends2 = __webpack_require__(11);
 	
-	var _queries = __webpack_require__(12);
+	var _extends3 = _interopRequireDefault(_extends2);
 	
-	var _queries2 = _interopRequireDefault(_queries);
+	var _graphql = __webpack_require__(12);
 	
-	var _mutations = __webpack_require__(28);
+	var _queries = __webpack_require__(13);
 	
-	var _mutations2 = _interopRequireDefault(_mutations);
+	var _mutations = __webpack_require__(38);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -244,7 +244,12 @@
 	  query: new _graphql.GraphQLObjectType({
 	    name: 'RootQuery',
 	    description: 'A root query',
-	    fields: _queries2.default
+	    fields: (0, _extends3.default)({}, _queries.SessionQuery, _queries.OfferQuery, _queries.InstitutionQuery)
+	  }),
+	  mutation: new _graphql.GraphQLObjectType({
+	    name: 'RootMutation',
+	    description: 'A root mutation',
+	    fields: (0, _extends3.default)({}, _mutations.OfferMutation)
 	  })
 	});
 	
@@ -254,10 +259,16 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = require("graphql");
+	module.exports = require("babel-runtime/helpers/extends");
 
 /***/ },
 /* 12 */
+/***/ function(module, exports) {
+
+	module.exports = require("graphql");
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -265,34 +276,74 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.ServiceCatQuery = exports.ContactQuery = exports.InstitutionQuery = exports.OfferQuery = exports.SessionQuery = undefined;
 	
-	var _extends2 = __webpack_require__(13);
-	
-	var _extends3 = _interopRequireDefault(_extends2);
+	var _graphql = __webpack_require__(12);
 	
 	var _session_query = __webpack_require__(14);
 	
 	var _session_query2 = _interopRequireDefault(_session_query);
 	
-	var _types = __webpack_require__(26);
+	var _offer_query = __webpack_require__(27);
+	
+	var _offer_query2 = _interopRequireDefault(_offer_query);
+	
+	var _institution_info_query = __webpack_require__(29);
+	
+	var _institution_info_query2 = _interopRequireDefault(_institution_info_query);
+	
+	var _contact_query = __webpack_require__(30);
+	
+	var _contact_query2 = _interopRequireDefault(_contact_query);
+	
+	var _service_category_query = __webpack_require__(31);
+	
+	var _service_category_query2 = _interopRequireDefault(_service_category_query);
+	
+	var _types = __webpack_require__(32);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// Send types to query types
+	// hold all imports
+	
+	
 	// Get particular query types
-	var SessionQuery = (0, _session_query2.default)(_types.SessionType);
+	var builtInTypes = {
+	  GraphQLObjectType: _graphql.GraphQLObjectType,
+	  GraphQLString: _graphql.GraphQLString,
+	  GraphQLID: _graphql.GraphQLID,
+	  GraphQLInt: _graphql.GraphQLInt,
+	  GraphQLBoolean: _graphql.GraphQLBoolean,
+	  GraphQLList: _graphql.GraphQLList,
+	  GraphQLNonNull: _graphql.GraphQLNonNull
+	};
+	
+	// Send custom and built in types to query types
+	
+	// Get types
+	var SessionQuery = (0, _session_query2.default)(_types.SessionType, builtInTypes);
+	var OfferQuery = (0, _offer_query2.default)(_types.OfferType, builtInTypes);
+	var InstitutionQuery = (0, _institution_info_query2.default)(_types.InstitutionType, builtInTypes);
+	var ContactQuery = (0, _contact_query2.default)(_types.ContactType, builtInTypes);
+	var ServiceCatQuery = (0, _service_category_query2.default)(_types.ServiceCatType, builtInTypes);
 	
 	// Make available all the query types a single object
 	
-	
-	// Get types
-	exports.default = (0, _extends3.default)({}, SessionQuery);
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	module.exports = require("babel-runtime/helpers/extends");
+	function test() {
+	  return {
+	    SessionQuery: SessionQuery,
+	    OfferQuery: OfferQuery,
+	    InstitutionQuery: InstitutionQuery,
+	    ContactQuery: ContactQuery,
+	    ServiceCatQuery: ServiceCatQuery
+	  };
+	}
+	exports.SessionQuery = SessionQuery;
+	exports.OfferQuery = OfferQuery;
+	exports.InstitutionQuery = InstitutionQuery;
+	exports.ContactQuery = ContactQuery;
+	exports.ServiceCatQuery = ServiceCatQuery;
+	exports.default = test;
 
 /***/ },
 /* 14 */
@@ -304,12 +355,21 @@
 	  value: true
 	});
 	
-	exports.default = function (sessionType) {
+	exports.default = function (sessionType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
 	  return {
 	    session: {
-	      type: sessionType,
-	      resolve: function resolve() {
-	        return _models.Session.findOne({ 'instructor': 'ramesh' }, function (err, session) {
+	      type: new GraphQLList(sessionType),
+	      args: {
+	        instructor: {
+	          type: GraphQLString,
+	          description: 'A name of a instructor'
+	        }
+	      },
+	      resolve: function resolve(root, params, options) {
+	        return _models.Session.find({ 'instructor': params.instructor }, function (err, session) {
 	          if (err) throw err;
 	          return {
 	            time: session.time,
@@ -338,57 +398,103 @@
 	
 	var _mongoose2 = _interopRequireDefault(_mongoose);
 	
-	var _student = __webpack_require__(17);
+	var _index = __webpack_require__(17);
 	
-	var _student2 = _interopRequireDefault(_student);
+	var _index2 = _interopRequireDefault(_index);
 	
-	var _session = __webpack_require__(18);
+	var _student_model = __webpack_require__(18);
 	
-	var _session2 = _interopRequireDefault(_session);
+	var _student_model2 = _interopRequireDefault(_student_model);
 	
-	var _inquiry = __webpack_require__(19);
+	var _session_model = __webpack_require__(19);
 	
-	var _inquiry2 = _interopRequireDefault(_inquiry);
+	var _session_model2 = _interopRequireDefault(_session_model);
 	
-	var _room = __webpack_require__(20);
+	var _inquiry_model = __webpack_require__(20);
 	
-	var _room2 = _interopRequireDefault(_room);
+	var _inquiry_model2 = _interopRequireDefault(_inquiry_model);
 	
-	var _staff = __webpack_require__(21);
+	var _room_model = __webpack_require__(21);
 	
-	var _staff2 = _interopRequireDefault(_staff);
+	var _room_model2 = _interopRequireDefault(_room_model);
 	
-	var _offer = __webpack_require__(22);
+	var _staff_model = __webpack_require__(22);
 	
-	var _offer2 = _interopRequireDefault(_offer);
+	var _staff_model2 = _interopRequireDefault(_staff_model);
 	
-	var _service_info = __webpack_require__(23);
+	var _offer_model = __webpack_require__(23);
 	
-	var _service_info2 = _interopRequireDefault(_service_info);
+	var _offer_model2 = _interopRequireDefault(_offer_model);
 	
-	var _institution_info = __webpack_require__(24);
+	var _service_info_model = __webpack_require__(24);
 	
-	var _institution_info2 = _interopRequireDefault(_institution_info);
+	var _service_info_model2 = _interopRequireDefault(_service_info_model);
 	
-	var _admin = __webpack_require__(25);
+	var _institution_info_model = __webpack_require__(25);
 	
-	var _admin2 = _interopRequireDefault(_admin);
+	var _institution_info_model2 = _interopRequireDefault(_institution_info_model);
+	
+	var _admin_model = __webpack_require__(26);
+	
+	var _admin_model2 = _interopRequireDefault(_admin_model);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	_mongoose2.default.connect('mongodb://localhost:27017/aryes');
+	// MongoDB connection
 	
-	// use native promises
+	
+	// Configuration
+	_mongoose2.default.connect('mongodb://localhost:27017/' + _index2.default.db.name);
+	
+	// Use native promises
+	
+	
+	// mongoose schemas
 	_mongoose2.default.Promise = global.Promise;
-	var Student = (0, _student2.default)(_mongoose2.default);
-	var Session = (0, _session2.default)(_mongoose2.default);
-	var Inquiry = (0, _inquiry2.default)(_mongoose2.default);
-	var Room = (0, _room2.default)(_mongoose2.default);
-	var Staff = (0, _staff2.default)(_mongoose2.default);
-	var Offer = (0, _offer2.default)(_mongoose2.default);
-	var Service = (0, _service_info2.default)(_mongoose2.default);
-	var Institution = (0, _institution_info2.default)(_mongoose2.default);
-	var Admin = (0, _admin2.default)(_mongoose2.default);
+	
+	// Pass mongoose to all schemas
+	var Student = (0, _student_model2.default)(_mongoose2.default);
+	var Session = (0, _session_model2.default)(_mongoose2.default);
+	var Inquiry = (0, _inquiry_model2.default)(_mongoose2.default);
+	var Room = (0, _room_model2.default)(_mongoose2.default);
+	var Staff = (0, _staff_model2.default)(_mongoose2.default);
+	var Offer = (0, _offer_model2.default)(_mongoose2.default);
+	var Service = (0, _service_info_model2.default)(_mongoose2.default);
+	var Institution = (0, _institution_info_model2.default)(_mongoose2.default);
+	var Admin = (0, _admin_model2.default)(_mongoose2.default);
+	
+	// import mongoose from 'mongoose'
+	
+	// // Configuration
+	// import config from '../config'
+	
+	// // mongoose schemas
+	// import student from './management/student'
+	// import session from './management/session'
+	// import inquiry from './management/inquiry'
+	// import room from './management/room'
+	// import staff from './management/staff'
+	// import offer from './service/offer'
+	// import service from './service/service_info'
+	// import institution from './institution/institution_info'
+	// import admin from './admin/admin'
+	
+	// // MongoDB connection
+	// mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
+	
+	// // Use native promises
+	// mongoose.Promise = global.Promise
+	
+	// // Pass mongoose to all schemas
+	// const Student = student(mongoose)
+	// const Session = session(mongoose)
+	// const Inquiry = inquiry(mongoose)
+	// const Room = room(mongoose)
+	// const Staff = staff(mongoose)
+	// const Offer = offer(mongoose)
+	// const Service = service(mongoose)
+	// const Institution = institution(mongoose)
+	// const Admin = admin(mongoose)
 	
 	// new Institution({
 	//   name: 'fdsf',
@@ -418,12 +524,15 @@
 	// })
 	
 	// new Offer({
-	//   name: 'initial payment',
-	//   discount: 25
+	//   code: 'CONNECTION',
+	//   discount: 60,
+	//   date_created: Date.now(),
+	//   active: false,
+	//   description: 'An offer for a relative'
 	// }).save((err) => {
 	//   if (err) throw err
 	//   console.log('saved')
-	// })
+	//  })
 	
 	// new Staff({
 	//   name: 'ramesh',
@@ -521,6 +630,16 @@
 /* 17 */
 /***/ function(module, exports) {
 
+	module.exports = {
+		"db": {
+			"name": "aryes"
+		}
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
 	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -575,7 +694,7 @@
 	};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -598,7 +717,7 @@
 	};
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -622,7 +741,7 @@
 	};
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -640,7 +759,7 @@
 	};
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -664,7 +783,7 @@
 	};
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -676,14 +795,23 @@
 	exports.default = function (mongoose) {
 	  var Schema = mongoose.Schema;
 	  var OfferSchema = new Schema({
-	    name: String,
-	    discount: Number
+	    code: {
+	      type: String,
+	      required: true
+	    },
+	    description: String,
+	    discount: {
+	      type: Number,
+	      required: true
+	    },
+	    date_created: Date,
+	    active: Boolean
 	  });
 	  return mongoose.model('offer', OfferSchema);
 	};
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -708,7 +836,7 @@
 	};
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -723,16 +851,19 @@
 	    name: String,
 	    contact: [{
 	      email: String,
-	      phone: String,
-	      social_links: [String]
+	      phone: String
 	    }],
-	    location: String
+	    location: String,
+	    sevice_category: [{
+	      name: String,
+	      description: String
+	    }]
 	  });
 	  return mongoose.model('institution', InstitutionSchema);
 	};
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -754,7 +885,7 @@
 	};
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -763,16 +894,203 @@
 	  value: true
 	});
 	
-	var _graphql = __webpack_require__(11);
+	var _promise = __webpack_require__(28);
 	
-	var _session_type = __webpack_require__(27);
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	exports.default = function (offerType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
+	  return {
+	    offer: {
+	      type: new GraphQLList(offerType),
+	      args: {
+	        id: {
+	          type: GraphQLString
+	        }
+	      },
+	      resolve: function resolve(root, params, options) {
+	        // find offer as argument if argument is specified
+	        var query = params.id ? { _id: params.id } : {};
+	        return new _promise2.default(function (resolve, reject) {
+	          _models.Offer.find(query, function (err, offer) {
+	            if (err) {
+	              reject(err);
+	            } else {
+	              resolve(offer);
+	            }
+	          });
+	        });
+	      }
+	    }
+	  };
+	};
+	
+	var _models = __webpack_require__(15);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	module.exports = require("babel-runtime/core-js/promise");
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _promise = __webpack_require__(28);
+	
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	exports.default = function (institutionType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
+	  return {
+	    institution_info: {
+	      type: institutionType,
+	      resolve: function resolve(root, params, options) {
+	        // find offer as argument if argument is specified
+	        var query = params.id ? { _id: params.id } : {};
+	        return new _promise2.default(function (resolve, reject) {
+	          resolve({
+	            name: 'something',
+	            location: 'bhaktapur'
+	          });
+	        });
+	      }
+	    }
+	  };
+	};
+	
+	var _models = __webpack_require__(15);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _promise = __webpack_require__(28);
+	
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	exports.default = function (contactType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
+	  return {
+	    contact: {
+	      type: contactType,
+	      resolve: function resolve(root, params, options) {
+	        // find offer as argument if argument is specified
+	        var query = params.id ? { _id: params.id } : {};
+	        return new _promise2.default(function (resolve, reject) {
+	          resolve({
+	            phone: '4545154545',
+	            email: 'fasdfasdfsadfd@fjdkjf.com'
+	          });
+	        });
+	      }
+	    }
+	  };
+	};
+	
+	var _models = __webpack_require__(15);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _promise = __webpack_require__(28);
+	
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	exports.default = function (serviceCatType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
+	  return {
+	    service_category: {
+	      type: serviceCatType,
+	      resolve: function resolve(root, params, options) {
+	        // find offer as argument if argument is specified
+	        var query = params.id ? { _id: params.id } : {};
+	        return new _promise2.default(function (resolve, reject) {
+	          resolve({
+	            name: 'something',
+	            description: 'some description'
+	          });
+	        });
+	      }
+	    }
+	  };
+	};
+	
+	var _models = __webpack_require__(15);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ServiceCatType = exports.ContactType = exports.InstitutionType = exports.OfferType = exports.SessionType = undefined;
+	
+	var _graphql = __webpack_require__(12);
+	
+	var _session_type = __webpack_require__(33);
 	
 	var _session_type2 = _interopRequireDefault(_session_type);
+	
+	var _offer_type = __webpack_require__(34);
+	
+	var _offer_type2 = _interopRequireDefault(_offer_type);
+	
+	var _institution_info_type = __webpack_require__(35);
+	
+	var _institution_info_type2 = _interopRequireDefault(_institution_info_type);
+	
+	var _contact_type = __webpack_require__(36);
+	
+	var _contact_type2 = _interopRequireDefault(_contact_type);
+	
+	var _service_category_type = __webpack_require__(37);
+	
+	var _service_category_type2 = _interopRequireDefault(_service_category_type);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// hold all imports
-	var types = {
+	var builtInTypes = {
 	  GraphQLObjectType: _graphql.GraphQLObjectType,
 	  GraphQLString: _graphql.GraphQLString,
 	  GraphQLID: _graphql.GraphQLID,
@@ -782,19 +1100,25 @@
 	  GraphQLNonNull: _graphql.GraphQLNonNull
 	};
 	
-	// pass all imports as object (type)
+	// pass all imports as object to types
 	
 	
 	// Get types
-	var SessionType = (0, _session_type2.default)(types);
+	var SessionType = (0, _session_type2.default)(builtInTypes);
+	var OfferType = (0, _offer_type2.default)(builtInTypes);
+	var InstitutionType = (0, _institution_info_type2.default)(builtInTypes);
+	var ContactType = (0, _contact_type2.default)(builtInTypes);
+	var ServiceCatType = (0, _service_category_type2.default)(builtInTypes);
 	
 	// make available all the types
-	exports.default = {
-	  SessionType: SessionType
-	};
+	exports.SessionType = SessionType;
+	exports.OfferType = OfferType;
+	exports.InstitutionType = InstitutionType;
+	exports.ContactType = ContactType;
+	exports.ServiceCatType = ServiceCatType;
 
 /***/ },
-/* 27 */
+/* 33 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -824,25 +1148,258 @@
 	};
 
 /***/ },
-/* 28 */
+/* 34 */
 /***/ function(module, exports) {
 
-	// Mutations
-	"use strict";
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (_ref) {
+	  var GraphQLObjectType = _ref.GraphQLObjectType,
+	      GraphQLString = _ref.GraphQLString,
+	      GraphQLInt = _ref.GraphQLInt,
+	      GraphQLBoolean = _ref.GraphQLBoolean;
+	
+	  return new GraphQLObjectType({
+	    name: 'offer',
+	    description: 'A list of offer',
+	    fields: {
+	      id: {
+	        type: GraphQLString,
+	        description: 'An unique id generated by mongodb'
+	      },
+	      code: {
+	        type: GraphQLString,
+	        description: 'A code for particular offer'
+	      },
+	      description: {
+	        type: GraphQLString,
+	        description: 'An offer explanation'
+	      },
+	      discount: {
+	        type: GraphQLInt,
+	        description: 'Discount percentage for the offer'
+	      },
+	      active: {
+	        type: GraphQLBoolean,
+	        description: 'A status of offer'
+	      },
+	      date_created: {
+	        type: GraphQLString,
+	        description: 'A date when offer is created'
+	      }
+	    }
+	  });
+	};
 
 /***/ },
-/* 29 */
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (_ref) {
+	  var GraphQLObjectType = _ref.GraphQLObjectType,
+	      GraphQLString = _ref.GraphQLString;
+	
+	  return new GraphQLObjectType({
+	    name: 'institution_info',
+	    description: 'Institution Information',
+	    fields: {
+	      name: {
+	        type: GraphQLString,
+	        description: 'A name of an institution'
+	      },
+	      location: {
+	        type: GraphQLString,
+	        description: 'Location of an institution'
+	      }
+	    }
+	  });
+	};
+	
+	var _queries = __webpack_require__(13);
+	
+	var test = _interopRequireWildcard(_queries);
+	
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+	
+	console.log(test);
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (_ref) {
+	  var GraphQLObjectType = _ref.GraphQLObjectType,
+	      GraphQLString = _ref.GraphQLString;
+	
+	  return new GraphQLObjectType({
+	    name: 'contact_info',
+	    description: 'Contact Information',
+	    fields: {
+	      phone: {
+	        type: GraphQLString,
+	        description: 'Official phone number'
+	      },
+	      email: {
+	        type: GraphQLString,
+	        description: 'Email address'
+	      }
+	    }
+	  });
+	};
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	exports.default = function (_ref) {
+	  var GraphQLObjectType = _ref.GraphQLObjectType,
+	      GraphQLString = _ref.GraphQLString;
+	
+	  return new GraphQLObjectType({
+	    name: 'service_category_info',
+	    description: 'Category Information',
+	    fields: {
+	      name: {
+	        type: GraphQLString,
+	        description: 'Name of Category'
+	      },
+	      description: {
+	        type: GraphQLString,
+	        description: 'Category description'
+	      }
+	    }
+	  });
+	};
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.OfferMutation = undefined;
+	
+	var _graphql = __webpack_require__(12);
+	
+	var _offer_mutation = __webpack_require__(39);
+	
+	var _offer_mutation2 = _interopRequireDefault(_offer_mutation);
+	
+	var _types = __webpack_require__(32);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	// hold all imports
+	
+	
+	// Get particular query types
+	var builtInTypes = {
+	  GraphQLObjectType: _graphql.GraphQLObjectType,
+	  GraphQLString: _graphql.GraphQLString,
+	  GraphQLID: _graphql.GraphQLID,
+	  GraphQLInt: _graphql.GraphQLInt,
+	  GraphQLBoolean: _graphql.GraphQLBoolean,
+	  GraphQLList: _graphql.GraphQLList,
+	  GraphQLNonNull: _graphql.GraphQLNonNull
+	};
+	
+	// Send custom and built in types to query types
+	
+	
+	// Get types
+	// Mutations
+	
+	var OfferMutation = (0, _offer_mutation2.default)(_types.OfferType, builtInTypes);
+	
+	// Make available all the query types a single object
+	exports.OfferMutation = OfferMutation;
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _promise = __webpack_require__(28);
+	
+	var _promise2 = _interopRequireDefault(_promise);
+	
+	var _extends2 = __webpack_require__(11);
+	
+	var _extends3 = _interopRequireDefault(_extends2);
+	
+	exports.default = function (offerType, _ref) {
+	  var GraphQLString = _ref.GraphQLString,
+	      GraphQLList = _ref.GraphQLList;
+	
+	  return {
+	    addNewOffer: {
+	      type: offerType,
+	      args: (0, _extends3.default)({}, offerType.getFields()),
+	      resolve: function resolve(root, params, options) {
+	        var offer = params;
+	        offer.date_created = Date.now();
+	        offer.active = true;
+	        return new _promise2.default(function (resolve, reject) {
+	          new _models.Offer(offer).save(function (err, user) {
+	            if (err) {
+	              reject(err);
+	            } else {
+	              resolve(user);
+	            }
+	          });
+	        });
+	      }
+	    }
+	  };
+	};
+	
+	var _models = __webpack_require__(15);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack");
 
 /***/ },
-/* 30 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(__dirname) {const ExtractTextPlugin = __webpack_require__(31)
+	/* WEBPACK VAR INJECTION */(function(__dirname) {const ExtractTextPlugin = __webpack_require__(42)
 	const { join, resolve } = __webpack_require__(7)
-	const webpack = __webpack_require__(29)
+	const webpack = __webpack_require__(40)
 	
 	const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 	
@@ -934,19 +1491,19 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, ""))
 
 /***/ },
-/* 31 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = require("extract-text-webpack-plugin");
 
 /***/ },
-/* 32 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack-dev-middleware");
 
 /***/ },
-/* 33 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = require("webpack-hot-middleware");

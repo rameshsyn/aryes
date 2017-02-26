@@ -3,13 +3,14 @@ import {
   GraphQLObjectType
 } from 'graphql'
 
-import ContactQuery from './contact_query'
-import ServiceCatQuery from './service_category_query'
-
 export default new GraphQLObjectType({
   name: 'institution_info',
   description: 'Institution Information',
   fields: {
+    id: {
+      type: GraphQLString,
+      description: 'Unique id'
+    },
     name: {
       type: GraphQLString,
       description: 'A name of an institution'
@@ -18,8 +19,22 @@ export default new GraphQLObjectType({
       type: GraphQLString,
       description: 'Location of an institution'
     },
-    ...ContactQuery,
-    ...ServiceCatQuery
+    contact: {
+      type: new GraphQLObjectType({
+        name: 'institution_contact_info',
+        description: 'Contact Information',
+        fields: {
+          phone: {
+            type: GraphQLString,
+            description: 'Official phone number'
+          },
+          email: {
+            type: GraphQLString,
+            description: 'Email address'
+          }
+        }
+      })
+    }
   }
 })
 
