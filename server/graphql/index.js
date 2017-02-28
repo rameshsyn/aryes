@@ -4,24 +4,28 @@ import {
 } from 'graphql'
 
 // Get all graphQL Query types
-import InstitutionQuery from '../institution/institution_info_query'
-import OfferQuery from '../service/offer_query'
+import InstitutionQuery from '../institution/general/institution_info_query'
+import OfferQuery from '../institution/offer/offer_query'
 import SessionQuery from '../management/session/session_query'
 import ProductQuery from '../service/product_query'
 import StudentQuery from '../management/student/student_query'
-import RoomQuery from '../management/room/room_query'
+import RoomQuery from '../institution/room/room_query'
 import StaffQuery from '../management/staff/staff_query'
-import ServiceCatQuery from '../institution/service_category_query'
+import ServiceCatQuery from '../institution/category/service_category_query'
+import PositionQuery from '../institution/position/position_query'
+import ExpenditureTypesQuery from '../institution/expenditure_type/expenditure_types_query'
 
 // Get all graphQL mutation types
-import OfferMutation from '../service/offer_mutation'
-import InstitutionMutation from '../institution/institution_info_mutation'
-import ServiceCatMutation from '../institution/service_category_mutation'
+import OfferMutation from '../institution/offer/offer_mutation'
+import InstitutionMutation from '../institution/general/institution_info_mutation'
+import ServiceCatMutation from '../institution/category/service_category_mutation'
 import ProductMutation from '../service/product_mutation'
-import RoomMutation from '../management/room/room_mutation'
+import RoomMutation from '../institution/room/room_mutation'
 import StaffMutation from '../management/staff/staff_mutation'
 import SessionMutation from '../management/session/session_mutation'
 import StudentMutation from '../management/student/student_mutation'
+import PositionMutation from '../institution/position/position_mutation'
+import ExpenditureTypesMutation from '../institution/expenditure_type/expenditure_types_mutation'
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -35,7 +39,9 @@ export default new GraphQLSchema({
       ...StudentQuery,
       ...RoomQuery,
       ...StaffQuery,
-      ...ServiceCatQuery
+      ...ServiceCatQuery,
+      ...PositionQuery,
+      ...ExpenditureTypesQuery
     }
   }),
   mutation: new GraphQLObjectType({
@@ -49,7 +55,9 @@ export default new GraphQLSchema({
       ...RoomMutation,
       ...StaffMutation,
       ...SessionMutation,
-      ...StudentMutation
+      ...StudentMutation,
+      ...PositionMutation,
+      ...ExpenditureTypesMutation
     }
   })
 })

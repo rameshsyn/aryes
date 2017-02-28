@@ -13,8 +13,8 @@ class Default extends Component {
           <Sidebar />
         </div>
         <div className={main}>
-{/*          <Navbar />
-*/}          {this.props.children}
+          <Navbar />
+          {this.props.children}
         </div>
       </div>
     )

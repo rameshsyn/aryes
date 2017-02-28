@@ -4,7 +4,7 @@ import {
   GraphQLInt
 } from 'graphql'
 import StaffType from '../staff/staff_type'
-import RoomType from '../room/room_type'
+import RoomType from '../../institution/room/room_type'
 
 export default new GraphQLObjectType({
   name: 'session',

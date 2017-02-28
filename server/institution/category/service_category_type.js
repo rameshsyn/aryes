@@ -14,6 +14,10 @@ export default new GraphQLObjectType({
       type: GraphQLString,
       description: 'Name of Category'
     },
+    label: {
+      type: GraphQLString,
+      description: 'label for the category'
+    },
     description: {
       type: GraphQLString,
       description: 'Category description'

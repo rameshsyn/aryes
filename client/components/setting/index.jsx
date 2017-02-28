@@ -1,11 +1,27 @@
 import React from 'react'
+import {
+  Button,
+  Icon,
+  Container
+} from 'semantic-ui-react'
 
 const Setting = ({children}) => {
-  const fallBack = <h1>Hello, This is a Setting section</h1>
-  return (
+  const mainMenus = (
     <div>
-      {children ? children : fallBack}
+      <Button color='green'>
+        <Icon name='user' size='huge' />
+        <b>Admin</b>
+      </Button>
+      <Button color='pink'>
+        <Icon name='home' size='huge' />
+        <b>Institution</b>
+      </Button>
     </div>
+  )
+  return (
+    <Container>
+      {children ? children : mainMenus}
+    </Container>
   )
 }
 

@@ -3,6 +3,11 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import {
   Form,
+  Container,
+  Modal,
+  Button,
+  Dimmer,
+  Loader,
   Divider
 } from 'semantic-ui-react'
 
@@ -50,24 +55,37 @@ class General extends Component {
   }
   render () {
     if (this.props.data.loading) {
-      return <h1>Loading</h1>
+      return (
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      )
     }
+    const { name, location, contact } = this.props.data.institution_info
     return (
-      <div>
+      <Container text>
         <div>
-          <h1>Institution name: {this.props.data.institution_info ? this.props.data.institution_info.name : 'add tuition information'}</h1>
+          <h3>Name: <i>{ name }</i></h3>
+          <h3>Location: <i>{ location }</i></h3>
+          <h3>Email: <i>{ contact.email }</i></h3>
+          <h3>Phone: <i>{ contact.phone }</i></h3>
         </div>
-        <Divider horizontal>ADD</Divider>
-        <Form size='big'>
-          <Form.Input label='Institution name' type='text' name='name' onChange={this.handleChange.bind(this)} />
-          <Form.Group widths='equal'>
-            <Form.Input label='Phone' type='text' name='phone' onChange={this.handleChange.bind(this)} />
-            <Form.Input label='Email' type='text' name='email' onChange={this.handleChange.bind(this)} />
-          </Form.Group>
-          <Form.Input label='Location' type='text' name='location' onChange={this.handleChange.bind(this)} />
-          <Form.Button type='button' color='green' onClick={this.update.bind(this)}>Submit</Form.Button>
-        </Form>
-      </div>
+        <Divider />
+        <Modal trigger={<Button color='green'>Update</Button>}>
+          <Modal.Header>Update Institution Information</Modal.Header>
+          <Modal.Content>
+            <Form size='big'>
+              <Form.Input label='Institution name' placeholder={name} type='text' name='name' onChange={this.handleChange.bind(this)} />
+              <Form.Group widths='equal'>
+                <Form.Input label='Phone' type='text' placeholder={contact.phone} name='phone' onChange={this.handleChange.bind(this)} />
+                <Form.Input label='Email' type='text' placeholder={contact.email} name='email' onChange={this.handleChange.bind(this)} />
+              </Form.Group>
+              <Form.Input label='Location' type='text' placeholder={location} name='location' onChange={this.handleChange.bind(this)} />
+              <Form.Button type='button' color='green' onClick={this.update.bind(this)}>Submit</Form.Button>
+            </Form>
+          </Modal.Content>
+        </Modal>
+      </Container>
     )
   }
 }

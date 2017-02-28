@@ -1,7 +1,7 @@
 import {
   GraphQLList
 } from 'graphql'
-import { ServiceCat } from '../models'
+import { ServiceCat } from '../../models'
 import ServiceCatType from './service_category_type'
 
 export default {

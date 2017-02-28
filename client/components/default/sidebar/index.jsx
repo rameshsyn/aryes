@@ -52,7 +52,6 @@ class Sidebar extends Component {
               <li className={subMenuItems} onClick={() => this.props.push('/management/session')}>Session</li>
               <li className={subMenuItems} onClick={() => this.props.push('/management/staff')}>Staff</li>
               <li className={subMenuItems} onClick={() => this.props.push('/management/inquiry')}>Inquiry</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/management/room')}>Room</li>
             </ul>
           </li>
           <li>
@@ -72,7 +71,6 @@ class Sidebar extends Component {
             </div>
             <ul className={`${subMenu} ${this.state.subMenuSerOn ? subMenuOn : subMenuOff}`}>
               <li className={subMenuItems} onClick={() => this.props.push('/service/product')}>Product</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/service/offer')}>Offer</li>
             </ul>
           </li>
           <li>
@@ -81,9 +79,8 @@ class Sidebar extends Component {
               <i className={`${menuIcon} fa ${this.state.subMenuSetOn ? 'fa-caret-up' : 'fa-caret-down'}`} />
             </div>
             <ul className={`${subMenu} ${this.state.subMenuSetOn ? subMenuOn : subMenuOff}`}>
-              <li className={subMenuItems} onClick={() => this.props.push('/setting/profile')}>Profile</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/setting/general')}>General</li>
-              <li className={subMenuItems} onClick={() => this.props.push('/setting/customization')}>Customization</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/setting/admin/account')}>Admin</li>
+              <li className={subMenuItems} onClick={() => this.props.push('/setting/institution/general')}>Institution</li>
             </ul>
           </li>
         </ul>

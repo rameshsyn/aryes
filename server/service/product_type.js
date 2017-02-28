@@ -3,7 +3,7 @@ import {
   GraphQLObjectType,
   GraphQLInt
 } from 'graphql'
-import ServiceCatType from '../institution/service_category_type'
+import ServiceCatType from '../institution/category/service_category_type'
 export default new GraphQLObjectType({
   name: 'product',
   description: 'product list',

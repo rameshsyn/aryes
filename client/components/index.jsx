@@ -8,14 +8,19 @@ import Staff from './management/staff'
 import Student from './management/student'
 import Expenditure from './accounting/expenditure'
 import Income from './accounting/income'
-import Room from './management/room'
 import Service from './service'
 import Product from './service/product'
-import Offer from './service/offer'
 import Setting from './setting'
-import Customization from './setting/customization'
-import General from './setting/general'
-import Profile from './setting/profile'
+import Institution from './setting/institution'
+import General from './setting/institution/general'
+import Category from './setting/institution/category'
+import Room from './setting/institution/room'
+import Offer from './setting/institution/offer'
+import Position from './setting/institution/position'
+import ExpenditureTypes from './setting/institution/expenditure_types'
+import Admin from './setting/admin'
+import Account from './setting/admin/account'
+import Admins from './setting/admin/admins'
 
 export {
   Home,
@@ -28,12 +33,17 @@ export {
   Student,
   Expenditure,
   Income,
-  Room,
   Service,
   Product,
   Offer,
   Setting,
-  Customization,
+  Institution,
   General,
-  Profile
+  Category,
+  Room,
+  Position,
+  ExpenditureTypes,
+  Admin,
+  Account,
+  Admins
 }

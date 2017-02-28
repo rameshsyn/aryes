@@ -16,15 +16,20 @@ import {
   Inquiry,
   Income,
   Expenditure,
-  Room,
   Service,
   Product,
   Offer,
   Setting,
-  Customization,
   General,
-  Profile
-  } from '../components'
+  Institution,
+  Category,
+  Room,
+  Position,
+  ExpenditureTypes,
+  Admin,
+  Account,
+  Admins
+} from '../components'
 
 const Routes = () => (
   <Router history={syncHistoryWithStore(browserHistory, store)}>
@@ -36,7 +41,6 @@ const Routes = () => (
         <Route path='/management/session' component={Session} />
         <Route path='/management/staff' component={Staff} />
         <Route path='/management/inquiry' component={Inquiry} />
-        <Route path='/management/room' component={Room} />
       </Route>
       <Route path='/accounting' component={Accounting}>
         <Route path='/accounting/income' component={Income} />
@@ -44,12 +48,20 @@ const Routes = () => (
       </Route>
       <Route path='/service' component={Service}>
         <Route path='/service/product' component={Product} />
-        <Route path='/service/offer' component={Offer} />
       </Route>
       <Route path='/setting' component={Setting}>
-        <Route path='/setting/profile' component={Profile} />
-        <Route path='/setting/general' component={General} />
-        <Route path='/setting/customization' component={Customization} />
+        <Route path='/setting/admin' component={Admin}>
+          <Route path='/setting/admin/account' component={Account} />
+          <Route path='/setting/admin/admins' component={Admins} />
+        </Route>
+        <Route path='/setting/institution' component={Institution}>
+          <Route path='/setting/institution/general' component={General} />
+          <Route path='/setting/institution/category' component={Category} />
+          <Route path='/setting/institution/room' component={Room} />
+          <Route path='/setting/institution/position' component={Position} />
+          <Route path='/setting/institution/offer' component={Offer} />
+          <Route path='/setting/institution/expenditure-types' component={ExpenditureTypes} />
+        </Route>
       </Route>
     </Route>
   </Router>

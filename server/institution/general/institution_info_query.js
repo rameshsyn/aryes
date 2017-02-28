@@ -1,4 +1,4 @@
-import { Institution } from '../models'
+import { Institution } from '../../models'
 import InstitutionType from './institution_info_type'
 
 export default {

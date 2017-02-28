@@ -8,7 +8,7 @@ import {
 
 import ProductType from '../../service/product_type'
 import SessionType from '../session/session_type'
-import OfferType from '../../service/offer_type'
+import OfferType from '../../institution/offer/offer_type'
 import PaymentType from '../../accounting/payment_type'
 
 export default new GraphQLObjectType({

@@ -1,4 +1,4 @@
-import { Offer } from '../models'
+import { Offer } from '../../models'
 import OfferType from './offer_type'
 import {
   GraphQLString,

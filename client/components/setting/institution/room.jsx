@@ -2,18 +2,22 @@ import React, { Component } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import {
-  Grid,
+  Container,
   Button,
   Modal,
   Form,
-  Label
+  Label,
+  Divider,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class Room extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      name: ''
+      name: '',
+      studentComp: 0
     }
   }
   handleChange (e) {
@@ -26,7 +30,8 @@ class Room extends Component {
   update () {
     this.props.addNewRoom({
       variables: {
-        name: this.state.name
+        name: this.state.name,
+        studentComp: Number(this.state.studentComp)
       },
       updateQueries: {
         getRooms: (prevQuery, newQuery) => {
@@ -48,30 +53,32 @@ class Room extends Component {
     })
   }
   render () {
-    if (this.props.data.loading) {
-      return <h1>loading</h1>
+     if (this.props.data.loading) {
+      return (
+        <Dimmer active>
+          <Loader />
+        </Dimmer>
+      )
     }
     return (
-      <Grid>
-        <Grid.Row>
-          {
-            this.props.data.room.map((r, i) => {
-              return <Label key={i}>{r.name}</Label>
-            })
-          }
-        </Grid.Row>
-        <Grid.Row>
-          <Modal trigger={<Button>Add Room</Button>}>
-            <Modal.Header>Add New Room</Modal.Header>
-            <Modal.Content>
-              <Form size='small'>
-                <Form.Input label='Room Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
-                <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
-              </Form>
-            </Modal.Content>
-          </Modal>
-        </Grid.Row>
-      </Grid>
+      <Container>
+        {
+          this.props.data.room.map((r, i) => {
+            return <Label key={i}>{r.name}</Label>
+          })
+        }
+        <Divider />
+        <Modal trigger={<Button color='green'>Add Room</Button>}>
+          <Modal.Header>Add New Room</Modal.Header>
+          <Modal.Content>
+            <Form size='small'>
+              <Form.Input label='Room Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Student Compatible' type='text' name='studentComp' onChange={this.handleChange.bind(this)} />
+              <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
+            </Form>
+          </Modal.Content>
+        </Modal>
+      </Container>
     )
   }
 }
@@ -81,15 +88,17 @@ const RoomQuery = gql`
     room {
       id
       name
+      studentComp
     }
   }
 `
 
 const RoomMutation = gql`
-  mutation addNewRoom($name: String) {
-    addNewRoom(name: $name) {
+  mutation addNewRoom($name: String, $studentComp: Int) {
+    addNewRoom(name: $name, studentComp: $studentComp) {
       id
       name
+      studentComp
     }
   }
 `
