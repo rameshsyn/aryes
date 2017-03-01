@@ -1,24 +1,45 @@
- /* Default Layout (Skeleton) */
-
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+import {
+  Sidebar,
+  Segment
+} from 'semantic-ui-react'
 import Navbar from './navbar'
-import Sidebar from './sidebar'
-import { wrapper, sidebar, main } from './default.scss'
+import SideMenu from './sidebar'
 
-class Default extends Component {
+class DefaultLayout extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      visible: false
+    }
+  }
+
+  toggleVisibility () {
+    this.setState({
+      visible: !this.state.visible
+    })
+  }
+
   render () {
+    const { visible } = this.state
+    const { children } = this.props
     return (
-      <div className={wrapper}>
-        <div className={sidebar}>
-          <Sidebar />
-        </div>
-        <div className={main}>
-          <Navbar />
-          {this.props.children}
+      <div>
+        <Navbar toggleVisibility={this.toggleVisibility.bind(this)} />
+        { /* Treatment for fixed navbar */ }
+        <div style={{marginTop: '45px'}}>
+          <Sidebar.Pushable as={Segment}>
+            <SideMenu visible={visible} />
+            <Sidebar.Pusher>
+              <div style={{minHeight: '600px'}}>
+                { children }
+              </div>
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
         </div>
       </div>
     )
   }
 }
 
-export default Default
+export default DefaultLayout
