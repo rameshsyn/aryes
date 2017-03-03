@@ -2,12 +2,18 @@ export default function (mongoose) {
   const Schema = mongoose.Schema
   const InquirySchema = new Schema({
     name: String,
-    address: String,
+    date: Date,
     academic_level: String,
-    services: Array,
+    services: [{
+      type: Schema.Types.ObjectId,
+      ref: 'product'
+    }],
     available_time: [String],
     contact: String,
-    remarks: String
+    status: {
+      fixed: Boolean,
+      informed: Number
+    }
   })
   return mongoose.model('inquiry', InquirySchema)
 }

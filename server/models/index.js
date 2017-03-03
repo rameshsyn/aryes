@@ -16,6 +16,7 @@ import position from '../institution/position/position_model'
 import room from '../institution/room/room_model'
 import offer from '../institution/offer/offer_model'
 import expenditureTypes from '../institution/expenditure_type/expenditure_types_model'
+import expenditure from '../accounting/expenditure/expenditure_model'
 
 // MongoDB connection
 mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
@@ -36,6 +37,7 @@ const Admin = admin(mongoose)
 const ServiceCat = serviceCat(mongoose)
 const Position = position(mongoose)
 const ExpenditureTypes = expenditureTypes(mongoose)
+const Expenditure = expenditure(mongoose)
 
 export {
   Student,
@@ -49,5 +51,6 @@ export {
   Admin,
   ServiceCat,
   Position,
-  ExpenditureTypes
+  ExpenditureTypes,
+  Expenditure
 }

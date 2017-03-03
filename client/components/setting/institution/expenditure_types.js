@@ -94,7 +94,7 @@ class Room extends Component {
                   <Label as='a' color='teal' size='medium' onClick={() => this.setState({label: 'teal'})}>teal</Label>
                   <Label as='a' color='purple' size='medium' onClick={() => this.setState({label: 'purple'})}>purple</Label>
                 </Form.Group>
-              </Form.Field>      
+              </Form.Field>
               <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
             </Form>
           </Modal.Content>

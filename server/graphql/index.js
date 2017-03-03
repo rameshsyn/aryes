@@ -14,6 +14,8 @@ import StaffQuery from '../management/staff/staff_query'
 import ServiceCatQuery from '../institution/category/service_category_query'
 import PositionQuery from '../institution/position/position_query'
 import ExpenditureTypesQuery from '../institution/expenditure_type/expenditure_types_query'
+import InquiryQuery from '../management/inquiry/inquiry_query'
+import ExpenditureQuery from '../accounting/expenditure/expenditure_query'
 
 // Get all graphQL mutation types
 import OfferMutation from '../institution/offer/offer_mutation'
@@ -26,6 +28,8 @@ import SessionMutation from '../management/session/session_mutation'
 import StudentMutation from '../management/student/student_mutation'
 import PositionMutation from '../institution/position/position_mutation'
 import ExpenditureTypesMutation from '../institution/expenditure_type/expenditure_types_mutation'
+import InquiryMutation from '../management/inquiry/inquiry_mutation'
+import ExpenditureMutation from '../accounting/expenditure/expenditure_mutation'
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -41,7 +45,9 @@ export default new GraphQLSchema({
       ...StaffQuery,
       ...ServiceCatQuery,
       ...PositionQuery,
-      ...ExpenditureTypesQuery
+      ...ExpenditureTypesQuery,
+      ...InquiryQuery,
+      ...ExpenditureQuery
     }
   }),
   mutation: new GraphQLObjectType({
@@ -57,7 +63,9 @@ export default new GraphQLSchema({
       ...SessionMutation,
       ...StudentMutation,
       ...PositionMutation,
-      ...ExpenditureTypesMutation
+      ...ExpenditureTypesMutation,
+      ...InquiryMutation,
+      ...ExpenditureMutation
     }
   })
 })
