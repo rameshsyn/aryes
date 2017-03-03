@@ -7,7 +7,8 @@ import {
   Modal,
   Form,
   Divider,
-  Table
+  Table,
+  Dropdown
 } from 'semantic-ui-react'
 
 class Student extends Component {
@@ -21,11 +22,55 @@ class Student extends Component {
       phone: '',
       email: '',
       date: null,
-      products: '',
-      sessions: '',
-      discount: 0,
-      offers: ''
+      products: [],
+      sessions: [],
+      offers: []
     }
+  }
+  handleProductItem (e, { value }) {
+    this.setState({
+      products: value
+    })
+  }
+  handleSessionItem (e, { value }) {
+    this.setState({
+      sessions: value
+    })
+  }
+  handleOfferItem (e, { value }) {
+    this.setState({
+      offers: value
+    })
+  }
+  makeProductItems () {
+    const { product } = this.props.data
+    return product.map(p => {
+      return {
+        key: p.id,
+        text: p.name,
+        value: p.id
+      }
+    })
+  }
+  makeSessionItems () {
+    const { session } = this.props.data
+    return session.map(s => {
+      return {
+        key: s.id,
+        text: s.name,
+        value: s.id
+      }
+    })
+  }
+  makerOfferItems () {
+    const { offer } = this.props.data
+    return offer.map(o => {
+      return {
+        key: o.id,
+        text: o.code,
+        value: o.id
+      }
+    })
   }
   handleChange (e) {
     const name = e.target.name
@@ -46,7 +91,6 @@ class Student extends Component {
         date: this.state.date,
         products: this.state.products,
         sessions: this.state.sessions,
-        discount: Number(this.state.discount),
         offers: this.state.offers
       },
       updateQueries: {
@@ -124,41 +168,19 @@ class Student extends Component {
                 <Form.Group>
                   <Form.Input label='Enroll Date' type='date' placeholder='Enroll date' name='date' onChange={this.handleChange.bind(this)} />
                   <Form.Field>
-                    <label>Product</label>
-                    <select name='products' onChange={this.handleChange.bind(this)}>
-                      <option value={this.state.products}>product</option>
-                      {
-                        this.props.data.product.map((p, i) => {
-                          return <option value={p.id} key={i}>{p.name}</option>
-                        })
-                      }
-                    </select>
+                    <label>Products</label>
+                    <Dropdown placeholder='Products' search selection multiple options={this.makeProductItems.bind(this)()} value={this.state.products} onChange={this.handleProductItem.bind(this)} />
                   </Form.Field>
                   <Form.Field>
-                    <label>Session</label>
-                    <select name='sessions' onChange={this.handleChange.bind(this)}>
-                      <option value={this.state.sessions}>session</option>
-                      {
-                        this.props.data.session.map((s, i) => {
-                          return <option value={s.id} key={i}>{s.name}</option>
-                        })
-                      }
-                    </select>
+                    <label>Sessions</label>
+                    <Dropdown placeholder='Sessions' search selection multiple options={this.makeSessionItems.bind(this)()} value={this.state.sessions} onChange={this.handleSessionItem.bind(this)} />
                   </Form.Field>
                 </Form.Group>
                 <Divider horizontal>Extra Information</Divider>
                 <Form.Group>
-                  <Form.Input label='Discount' type='text' placeholder='Discount amount' name='discount' onChange={this.handleChange.bind(this)} />
                   <Form.Field>
-                    <label>Offer</label>
-                    <select name='offers' onChange={this.handleChange.bind(this)}>
-                      <option value={this.state.offers}>offer</option>
-                      {
-                        this.props.data.offer.map((o, i) => {
-                          return <option value={o.id} key={i}>{o.code}</option>
-                        })
-                      }
-                    </select>
+                    <label>Offers</label>
+                    <Dropdown placeholder='Products' search selection multiple options={this.makerOfferItems.bind(this)()} value={this.state.offers} onChange={this.handleOfferItem.bind(this)} />
                   </Form.Field>
                 </Form.Group>
                 <Form.Button type='button' onClick={this.update.bind(this)}>Register</Form.Button>
@@ -201,8 +223,8 @@ const StudentQuery = gql`
 `
 
 const StudentMutation = gql`
-  mutation addNewStudent($name: String, $address: String, $academic_level: String, $school: String, $phone: String, $email: String, $date: String, $products: String, $sessions: String, $discount: Int, $offers: String ) {
-    addNewStudent(name: $name, address: $address, academic_level: $academic_level, school: $school, phone: $phone, email: $email, date: $date, products: $products, sessions: $sessions, discount: $discount, offers: $offers) {
+  mutation addNewStudent($name: String, $address: String, $academic_level: String, $school: String, $phone: String, $email: String, $date: String, $products: [String], $sessions: [String], $offers: [String] ) {
+    addNewStudent(name: $name, address: $address, academic_level: $academic_level, school: $school, phone: $phone, email: $email, date: $date, products: $products, sessions: $sessions, offers: $offers) {
       id 
       basic_info {
         name

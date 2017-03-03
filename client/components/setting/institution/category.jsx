@@ -24,6 +24,11 @@ class Category extends Component {
       label: ''
     }
   }
+  handleLabelChange (e, { color }) {
+    this.setState({
+      label: color
+    })
+  }
   handleChange (e) {
     const name = e.target.name
     const value = e.target.value
@@ -122,17 +127,17 @@ class Category extends Component {
               <Form.Field>
                 <label>Label</label>
                 <Form.Group>
-                  <Label as='a' color='orange' size='medium' onClick={() => this.setState({label: 'orange'})}>orange</Label>
-                  <Label as='a' color='blue' size='medium' onClick={() => this.setState({label: 'blue'})}>blue</Label>
-                  <Label as='a' color='olive' size='medium' onClick={() => this.setState({label: 'olive'})}>olive</Label>
-                  <Label as='a' color='violet' size='medium' onClick={() => this.setState({label: 'violet'})}>violet</Label>
-                  <Label as='a' color='grey' size='medium' onClick={() => this.setState({label: 'grey'})}>grey</Label>
-                  <Label as='a' color='brown' size='medium' onClick={() => this.setState({label: 'brown'})}>brown</Label>
-                  <Label as='a' color='black' size='medium' onClick={() => this.setState({label: 'black'})}>black</Label>
-                  <Label as='a' color='green' size='medium' onClick={() => this.setState({label: 'green'})}>green</Label>
-                  <Label as='a' color='pink' size='medium' onClick={() => this.setState({label: 'pink'})}>pink</Label>
-                  <Label as='a' color='teal' size='medium' onClick={() => this.setState({label: 'teal'})}>teal</Label>
-                  <Label as='a' color='purple' size='medium' onClick={() => this.setState({label: 'purple'})}>purple</Label>
+                  <Label as='a' color='orange' size='medium' onClick={this.handleLabelChange.bind(this)}>orange</Label>
+                  <Label as='a' color='blue' size='medium' onClick={this.handleLabelChange.bind(this)}>blue</Label>
+                  <Label as='a' color='olive' size='medium' onClick={this.handleLabelChange.bind(this)}>olive</Label>
+                  <Label as='a' color='violet' size='medium' onClick={this.handleLabelChange.bind(this)}>violet</Label>
+                  <Label as='a' color='grey' size='medium' onClick={this.handleLabelChange.bind(this)}>grey</Label>
+                  <Label as='a' color='brown' size='medium' onClick={this.handleLabelChange.bind(this)}>brown</Label>
+                  <Label as='a' color='black' size='medium' onClick={this.handleLabelChange.bind(this)}>black</Label>
+                  <Label as='a' color='green' size='medium' onClick={this.handleLabelChange.bind(this)}>green</Label>
+                  <Label as='a' color='pink' size='medium' onClick={this.handleLabelChange.bind(this)}>pink</Label>
+                  <Label as='a' color='teal' size='medium' onClick={this.handleLabelChange.bind(this)}>teal</Label>
+                  <Label as='a' color='purple' size='medium' onClick={this.handleLabelChange.bind(this)}>purple</Label>
                 </Form.Group>
               </Form.Field>
               <Form.TextArea label='Description' name='description' placeholder='What is this category about ?' onChange={this.handleChange.bind(this)} />

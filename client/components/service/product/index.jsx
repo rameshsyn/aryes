@@ -7,7 +7,8 @@ import {
   Modal,
   Form,
   Divider,
-  Label
+  Label,
+  Dropdown
 } from 'semantic-ui-react'
 
 class Product extends Component {
@@ -19,6 +20,21 @@ class Product extends Component {
       description: '',
       category: ''
     }
+  }
+  handleCategoryItem (e, { value }) {
+    this.setState({
+      category: value
+    })
+  }
+  makeCategoryItems () {
+    const { category } = this.props.data
+    return category.map(c => {
+      return {
+        key: c.id,
+        text: c.name,
+        value: c.id
+      }
+    })
   }
   handleChange (e) {
     const name = e.target.name
@@ -76,15 +92,8 @@ class Product extends Component {
                 <Form.Input label='Product Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
                 <Form.Input label='Cost' type='text' name='cost' onChange={this.handleChange.bind(this)} />
                 <Form.Field>
-                  <label>Service Category</label>
-                  <select name='category' onChange={this.handleChange.bind(this)}>
-                    <option value={this.state.category}>service category</option>
-                    {
-                      this.props.data.category.map(cat => {
-                        return <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      })
-                    }
-                  </select>
+                  <label>Categories</label>
+                  <Dropdown placeholder='Categories' search selection options={this.makeCategoryItems.bind(this)()} value={this.state.category} onChange={this.handleCategoryItem.bind(this)} />
                 </Form.Field>
                 <Form.TextArea label='Description' name='description' onChange={this.handleChange.bind(this)} />
                 <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>

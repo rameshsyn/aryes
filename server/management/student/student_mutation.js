@@ -1,6 +1,7 @@
 import {
   GraphQLString,
-  GraphQLInt
+  GraphQLInt,
+  GraphQLList
 } from 'graphql'
 import { Student } from '../../models'
 import StudentType from './student_type'
@@ -31,20 +32,16 @@ export default {
         type: GraphQLString
       },
       products: {
-        type: GraphQLString
+        type: new GraphQLList(GraphQLString)
       },
       sessions: {
-        type: GraphQLString
+        type: new GraphQLList(GraphQLString)
       },
       offers: {
-        type: GraphQLString
-      },
-      discount: {
-        type: GraphQLInt
+        type: new GraphQLList(GraphQLString)
       }
     },
     resolve: (root, params, options) => {
-      console.log(params)
       const newStudent = {
         basic_info: {
           name: params.name,
@@ -58,12 +55,11 @@ export default {
         },
         enrollment_info: {
           date: params.date,
-          products: [params.products],
-          sessions: [params.sessions]
+          products: params.products,
+          sessions: params.sessions
         },
         payment_info: {
-          offers: [params.offers],
-          discount: params.discount
+          offers: params.offers
         }
       }
       return new Promise((resolve, reject) => {

@@ -1,4 +1,7 @@
-import { GraphQLString } from 'graphql'
+import {
+  GraphQLString,
+  GraphQLList
+} from 'graphql'
 import { Staff } from '../../models'
 import StaffType from './staff_type'
 
@@ -10,7 +13,7 @@ export default {
         type: GraphQLString
       },
       position: {
-        type: GraphQLString
+        type: new GraphQLList(GraphQLString)
       },
       contact: {
         type: GraphQLString

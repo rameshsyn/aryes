@@ -2,11 +2,7 @@ export default function (mongoose) {
   const Schema = mongoose.Schema
   const SessionSchema = new Schema({
     name: String,
-    time: {
-      start: Number,
-      end: Number,
-      period: String
-    },
+    timePeriod: String,
     instructor: {
       type: Schema.Types.ObjectId,
       ref: 'staff'

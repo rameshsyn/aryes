@@ -1,6 +1,5 @@
 import {
-  GraphQLString,
-  GraphQLInt
+  GraphQLString
 } from 'graphql'
 import { Session } from '../../models'
 import SessionType from './session_type'
@@ -12,13 +11,7 @@ export default {
       instructor: {
         type: GraphQLString
       },
-      timeStart: {
-        type: GraphQLInt
-      },
-      timeEnd: {
-        type: GraphQLInt
-      },
-      period: {
+      timePeriod: {
         type: GraphQLString
       },
       room: {
@@ -29,18 +22,8 @@ export default {
       }
     },
     resolve: (root, params, options) => {
-      const newSession = {
-        name: params.name,
-        instructor: params.instructor,
-        time: {
-          start: params.timeStart,
-          end: params.timeEnd,
-          period: params.period
-        },
-        room: params.room
-      }
       return new Promise((resolve, reject) => {
-        new Session(newSession).save((err, session) => {
+        new Session(params).save((err, session) => {
           if (err) {
             reject(err)
           } else {

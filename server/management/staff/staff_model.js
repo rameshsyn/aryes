@@ -11,7 +11,10 @@ export default function (mongoose) {
       date: Date,
       amount: Number
     }],
-    position: String
+    position: [{
+      type: Schema.Types.ObjectId,
+      ref: 'position'
+    }]
   })
   return mongoose.model('staff', StaffSchema)
 }

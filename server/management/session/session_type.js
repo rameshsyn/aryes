@@ -1,7 +1,6 @@
 import {
   GraphQLString,
-  GraphQLObjectType,
-  GraphQLInt
+  GraphQLObjectType
 } from 'graphql'
 import StaffType from '../staff/staff_type'
 import RoomType from '../../institution/room/room_type'
@@ -16,21 +15,8 @@ export default new GraphQLObjectType({
     name: {
       type: GraphQLString
     },
-    time: {
-      type: new GraphQLObjectType({
-        name: 'time_interval',
-        fields: {
-          start: {
-            type: GraphQLInt
-          },
-          end: {
-            type: GraphQLInt
-          },
-          peroid: {
-            type: GraphQLString
-          }
-        }
-      })
+    timePeriod: {
+      type: GraphQLString
     },
     instructor: {
       type: StaffType

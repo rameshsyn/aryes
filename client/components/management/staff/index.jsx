@@ -6,7 +6,8 @@ import {
   Button,
   Modal,
   Form,
-  Label
+  Label,
+  Dropdown
 } from 'semantic-ui-react'
 
 class Staff extends Component {
@@ -15,7 +16,7 @@ class Staff extends Component {
     this.state = {
       name: '',
       contact: '',
-      position: ''
+      position: []
     }
   }
   handleChange (e) {
@@ -23,6 +24,21 @@ class Staff extends Component {
     const value = e.target.value
     this.setState({
       [name]: value
+    })
+  }
+  handlePositionItem (e, { value }) {
+    this.setState({
+      position: value
+    })
+  }
+  makePositionItems () {
+    const { position } = this.props.data
+    return position.map(p => {
+      return {
+        key: p.id,
+        text: p.name,
+        value: p.id
+      }
     })
   }
   update () {
@@ -71,7 +87,10 @@ class Staff extends Component {
               <Form size='small'>
                 <Form.Input label='Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
                 <Form.Input label='Contact' type='text' name='contact' onChange={this.handleChange.bind(this)} />
-                <Form.Input label='Position' type='text' name='position' onChange={this.handleChange.bind(this)} />
+                <Form.Field>
+                  <label>Positions</label>
+                  <Dropdown placeholder='Positions' search selection multiple options={this.makePositionItems.bind(this)()} value={this.state.position} onChange={this.handlePositionItem.bind(this)} />
+                </Form.Field>
                 <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
               </Form>
             </Modal.Content>
@@ -87,19 +106,29 @@ const StaffQuery = gql`
     staff {
       id
       name
-      position
       contact
+      position {
+        id
+        name
+      }      
     }
+    position {
+      id
+      name
+    }  
   }
 `
 
 const StaffMutation = gql`
-  mutation addNewStaff($name: String, $contact: String, $position: String) {
+  mutation addNewStaff($name: String, $contact: String, $position: [String]) {
     addNewStaff(name: $name, contact: $contact, position: $position) {
       id
       name
-      position
       contact
+      position {
+        id
+        name
+      } 
     }
   }
 `

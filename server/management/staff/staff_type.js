@@ -5,6 +5,7 @@ import {
   GraphQLInt
 } from 'graphql'
 
+import PositionType from '../../institution/position/position_type'
 export default new GraphQLObjectType({
   name: 'staff',
   description: 'A staff list',
@@ -35,7 +36,7 @@ export default new GraphQLObjectType({
       }))
     },
     position: {
-      type: GraphQLString
+      type: PositionType
     }
   }
 })

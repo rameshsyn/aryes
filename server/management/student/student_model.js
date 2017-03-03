@@ -17,7 +17,7 @@ export default function (mongoose) {
     },
     enrollment_info: {
       date: {
-        type: String
+        type: Date
       },
       products: [{
         type: Schema.Types.ObjectId,

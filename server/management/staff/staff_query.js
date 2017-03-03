@@ -8,6 +8,7 @@ export default {
     resolve: (root, params, options) => {
       return new Promise((resolve, reject) => {
         Staff.find({})
+            .populate('position')
             .exec((err, staff) => {
               if (err) {
                 reject(err)
