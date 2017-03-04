@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql, compose } from 'react-apollo'
+import { routerActions } from 'react-router-redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import gql from 'graphql-tag'
 import {
   Grid,
@@ -119,7 +122,7 @@ class Student extends Component {
     return (
       <Grid>
         <Grid.Row>
-          <Table>
+          <Table selectable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
@@ -134,7 +137,15 @@ class Student extends Component {
                 this.props.data.student.map((s, i) => {
                   return (
                     <Table.Row key={i}>
-                      <Table.Cell>{s.basic_info.name}</Table.Cell>
+                      <Table.Cell onClick={() => this.props.push(`/student/${s.id}`)}>
+                        <b
+                          style={{
+                            cursor: 'pointer',
+                            textDecoration: 'underline'
+                          }}
+                          title='view profile'
+                        >{s.basic_info.name}</b>
+                      </Table.Cell>
                       <Table.Cell>{s.basic_info.address}</Table.Cell>
                       <Table.Cell>{s.basic_info.academic_level}</Table.Cell>
                       <Table.Cell>{s.contact_info.phone}</Table.Cell>
@@ -238,9 +249,13 @@ const StudentMutation = gql`
     }
   }
 `
-export default compose(
+const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
+
+const StudentWithDate = compose(
   graphql(StudentQuery),
   graphql(StudentMutation, {
     name: 'addNewStudent'
   })
 )(Student)
+
+export default connect(null, mapDipatchToProps)(StudentWithDate)

@@ -28,7 +28,8 @@ import {
   ExpenditureTypes,
   Admin,
   Account,
-  Admins
+  Admins,
+  StudentProfile
 } from '../components'
 
 const Routes = () => (
@@ -63,6 +64,7 @@ const Routes = () => (
           <Route path='/setting/institution/expenditure-types' component={ExpenditureTypes} />
         </Route>
       </Route>
+      <Route path='/student/:profileId' component={StudentProfile} />
     </Route>
   </Router>
 )

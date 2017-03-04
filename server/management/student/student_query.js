@@ -15,8 +15,9 @@ export default {
       }
     },
     resolve: (root, params, options) => {
+      const query = params.id ? {_id: params.id} : {}
       return new Promise((resolve, reject) => {
-        Student.find({})
+        Student.find(query)
                 .populate('enrollment_info.products')
                 .populate('enrollment_info.sessions')
                 .populate('payment_info.offers')

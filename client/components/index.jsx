@@ -21,6 +21,7 @@ import ExpenditureTypes from './setting/institution/expenditure_types'
 import Admin from './setting/admin'
 import Account from './setting/admin/account'
 import Admins from './setting/admin/admins'
+import StudentProfile from './management/student/profile'
 
 export {
   Home,
@@ -45,5 +46,6 @@ export {
   ExpenditureTypes,
   Admin,
   Account,
-  Admins
+  Admins,
+  StudentProfile
 }
