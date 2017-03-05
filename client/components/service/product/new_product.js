@@ -5,12 +5,9 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import gql from 'graphql-tag'
 import {
-  Grid,
-  Button,
-  Divider,
-  Label,
-  Container,
-  Header
+  Modal,
+  Form,
+  Dropdown
 } from 'semantic-ui-react'
 
 class Product extends Component {
@@ -20,8 +17,16 @@ class Product extends Component {
       name: '',
       cost: 0,
       description: '',
-      category: ''
+      category: '',
+      modalOpen: true
     }
+  }
+  handleModalClose (e) {
+    this.setState({
+      modalOpen: false
+    })
+    // route to product page
+    this.props.push('/service')
   }
   handleCategoryItem (e, { value }) {
     this.setState({
@@ -77,32 +82,21 @@ class Product extends Component {
       return <h1>loading</h1>
     }
     return (
-      <Grid padded>
-        <Grid.Row>
-          <Container>
-            <Header as='h3' textAlign='center'>
-              Service
-            </Header>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Container>
-            <Button floated='right' onClick={() => this.props.push('/service/new')}>New Product</Button>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          {
-            this.props.data.product.map((pr, i) => {
-              return <Label key={i}>{pr.name}</Label>
-            })
-          }
-        </Grid.Row>
-        <Grid.Row>
-          {this.props.children}
-        </Grid.Row>
-      </Grid>
+      <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
+        <Modal.Header>Add New Product</Modal.Header>
+        <Modal.Content>
+          <Form size='small'>
+            <Form.Input label='Product Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
+            <Form.Input label='Cost' type='text' name='cost' onChange={this.handleChange.bind(this)} />
+            <Form.Field>
+              <label>Categories</label>
+              <Dropdown placeholder='Categories' search selection options={this.makeCategoryItems.bind(this)()} value={this.state.category} onChange={this.handleCategoryItem.bind(this)} />
+            </Form.Field>
+            <Form.TextArea label='Description' name='description' onChange={this.handleChange.bind(this)} />
+            <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
+          </Form>
+        </Modal.Content>
+      </Modal>
     )
   }
 }

@@ -5,15 +5,9 @@ import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-  Grid,
-  Button,
   Modal,
   Form,
-  Label,
-  Dropdown,
-  Container,
-  Header,
-  Divider
+  Dropdown
 } from 'semantic-ui-react'
 
 class Staff extends Component {
@@ -22,8 +16,16 @@ class Staff extends Component {
     this.state = {
       name: '',
       contact: '',
-      position: []
+      position: [],
+      modalOpen: true
     }
+  }
+  handleModalClose (e) {
+    this.setState({
+      modalOpen: false
+    })
+    // route to staff page
+    this.props.push('/management/staff')
   }
   handleChange (e) {
     const name = e.target.name
@@ -78,30 +80,20 @@ class Staff extends Component {
       return <h1>loading</h1>
     }
     return (
-      <Grid padded>
-        <Grid.Row>
-          <Container>
-            <Header as='h3' textAlign='center'>
-              Staff
-            </Header>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Container>
-            <Button floated='right' onClick={() => this.props.push('/management/staff/new')}>New Staff</Button>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          {
-            this.props.data.staff.map((s, i) => {
-              return <Label key={i}>{s.name}</Label>
-            })
-          }
-        </Grid.Row>
-        {this.props.children}
-      </Grid>
+      <Modal open={true} onClose={this.handleModalClose.bind(this)}>
+        <Modal.Header>Add New Staff</Modal.Header>
+        <Modal.Content>
+          <Form size='small'>
+            <Form.Input label='Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
+            <Form.Input label='Contact' type='text' name='contact' onChange={this.handleChange.bind(this)} />
+            <Form.Field>
+              <label>Positions</label>
+              <Dropdown placeholder='Positions' search selection multiple options={this.makePositionItems.bind(this)()} value={this.state.position} onChange={this.handlePositionItem.bind(this)} />
+            </Form.Field>
+            <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
+          </Form>
+        </Modal.Content>
+      </Modal>
     )
   }
 }

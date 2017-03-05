@@ -1,12 +1,14 @@
 import React from 'react'
+import {
+  Container
+} from 'semantic-ui-react'
 
-const Dash = () => {
+const Dashboard = ({children}) => {
   return (
-    <div>
-      <h1>Hello, This is dashboard</h1>
-    </div>
-
+    <Container>
+      this is a Dashboard
+    </Container>
   )
 }
 
-export default Dash
+export default Dashboard

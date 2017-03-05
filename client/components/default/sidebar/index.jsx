@@ -29,7 +29,7 @@ class SideMenu extends Component {
           <Icon name='dashboard' />
           <b>Dashboard</b>
         </Menu.Item>
-        <Menu.Item name='service' active={activeItem === 'service'} onClick={(e, ref) => this.handleItemClick(e, ref, '/service/product')}>
+        <Menu.Item name='service' active={activeItem === 'service'} onClick={(e, ref) => this.handleItemClick(e, ref, '/service')}>
           <Icon name='cubes' />
           Service
         </Menu.Item>

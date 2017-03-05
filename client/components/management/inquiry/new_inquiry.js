@@ -5,14 +5,11 @@ import { routerActions } from 'react-router-redux'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import {
-  Grid,
-  Button,
-  Header,
-  Divider,
-  Table,
+  Modal,
+  Form,
   Dimmer,
   Loader,
-  Container
+  Dropdown
 } from 'semantic-ui-react'
 
 class Inquiry extends Component {
@@ -24,8 +21,16 @@ class Inquiry extends Component {
       contact: '',
       date: null,
       services: [],
-      available_time: []
+      available_time: [],
+      modalOpen: true
     }
+  }
+  handleModalClose (e) {
+    this.setState({
+      modalOpen: false
+    })
+    // route to inquiry page
+    this.props.push('/management/inquiry')
   }
   handleProductItem (e, { value }) {
     this.setState({
@@ -109,54 +114,28 @@ class Inquiry extends Component {
       )
     }
     return (
-      <Grid padded>
-        <Grid.Row>
-          <Container>
-            <Header as='h3' textAlign='center'>
-              Inquiry
-            </Header>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Container>
-            <Button floated='right'>Filter</Button>
-            <Button floated='right' onClick={() => this.props.push('/management/inquiry/new')}>New Inquiry</Button>
-          </Container>
-        </Grid.Row>
-        <Divider horizontal />
-        <Grid.Row>
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Contact</Table.HeaderCell>
-                <Table.HeaderCell>Services</Table.HeaderCell>
-                <Table.HeaderCell>Available Time</Table.HeaderCell>
-                <Table.HeaderCell>Status</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {
-                this.props.data.inquiry.map((inq, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>{inq.date}</Table.Cell>
-                      <Table.Cell>{inq.name}</Table.Cell>
-                      <Table.Cell>{inq.contact}</Table.Cell>
-                      <Table.Cell>{inq.services.map((s, i) => <span key={i}>{s.name},</span>)}</Table.Cell>
-                      <Table.Cell>{inq.available_time.map((t, i) => <span key={i}>{t},</span>)}</Table.Cell>
-                      <Table.Cell>{inq.status}</Table.Cell>
-                    </Table.Row>
-                  )
-                })
-              }
-            </Table.Body>
-          </Table>
-          {this.props.children}
-        </Grid.Row>
-      </Grid>
+      <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
+        <Modal.Header>Add New Inquiry</Modal.Header>
+        <Modal.Content>
+          <Form size='small'>
+            <Form.Group>
+              <Form.Input label='Name:' type='text' placeholder='Full name' name='name' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Academic level' type='text' placeholder='Academic level' name='level' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Contact Number' type='text' placeholder='Phone' name='contact' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Date' type='date' placeholder='Date' name='date' onChange={this.handleChange.bind(this)} />
+            </Form.Group>
+            <Form.Field>
+              <label>Available Time</label>
+              <Dropdown placeholder='Time period' search selection multiple options={this.makeAvailableTimes.bind(this)()} value={this.state.available_time} onChange={this.handleAvailableTime.bind(this)} />
+            </Form.Field>
+            <Form.Field>
+              <label>Services</label>
+              <Dropdown placeholder='Products' search selection multiple options={this.makeProductItems.bind(this)()} value={this.state.services} onChange={this.handleProductItem.bind(this)} />
+            </Form.Field>
+            <Form.Button type='button' onClick={this.update.bind(this)}>Register</Form.Button>
+          </Form>
+        </Modal.Content>
+      </Modal>
     )
   }
 }

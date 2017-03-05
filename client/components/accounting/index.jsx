@@ -1,12 +1,14 @@
 import React from 'react'
+import {
+  Container
+} from 'semantic-ui-react'
 
-const Account = ({children}) => {
-  const fallBack = <h1>Hello, This is an Accounting section</h1>
+const Accounting = ({children}) => {
   return (
-    <div>
-      {children ? children : fallBack}
-    </div>
+    <Container>
+      {children}
+    </Container>
   )
 }
 
-export default Account
+export default Accounting

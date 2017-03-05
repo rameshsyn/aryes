@@ -22,6 +22,12 @@ import Admin from './setting/admin'
 import Account from './setting/admin/account'
 import Admins from './setting/admin/admins'
 import StudentProfile from './management/student/profile'
+import NewStudent from './management/student/new_student'
+import NewSession from './management/session/new_session'
+import NewStaff from './management/staff/new_staff'
+import NewInquiry from './management/inquiry/new_inquiry'
+import NewProduct from './service/product/new_product'
+import NewExpenditure from './accounting/expenditure/new_expenditure'
 
 export {
   Home,
@@ -47,5 +53,11 @@ export {
   Admin,
   Account,
   Admins,
-  StudentProfile
+  StudentProfile,
+  NewStudent,
+  NewSession,
+  NewStaff,
+  NewInquiry,
+  NewProduct,
+  NewExpenditure
 }

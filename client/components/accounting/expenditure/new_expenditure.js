@@ -5,14 +5,11 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import gql from 'graphql-tag'
 import {
-  Grid,
-  Button,
-  Container,
-  Divider,
-  Table,
+  Modal,
+  Form,
   Dimmer,
   Loader,
-  Header
+  Dropdown
 } from 'semantic-ui-react'
 
 class Expenditure extends Component {
@@ -23,8 +20,16 @@ class Expenditure extends Component {
       amount: 0,
       type: '',
       date: null,
-      by: ''
+      by: '',
+      modalOpen: true
     }
+  }
+  handleModalClose (e) {
+    this.setState({
+      modalOpen: false
+    })
+    // route to expenditure page
+    this.props.push('/accounting/expenditure')
   }
   handleExpenditureTypeItems (e, { value }) {
     this.setState({
@@ -85,51 +90,24 @@ class Expenditure extends Component {
       )
     }
     return (
-      <Grid padded>
-        <Grid.Row>
-          <Container>
-            <Header as='h3' textAlign='center'>
-              Expenditure
-            </Header>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Container>
-            <Button floated='right' onClick={() => this.props.push('/accounting/expenditure/new')}>New Expenditure</Button>
-          </Container>
-        </Grid.Row>
-        <Divider />
-        <Grid.Row>
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Date</Table.HeaderCell>
-                <Table.HeaderCell>Amount</Table.HeaderCell>
-                <Table.HeaderCell>Purpose</Table.HeaderCell>
-                <Table.HeaderCell>By</Table.HeaderCell>
-                <Table.HeaderCell>Type</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {
-                this.props.data.expenditure.map((ex, i) => {
-                  return (
-                    <Table.Row key={i}>
-                      <Table.Cell>{ex.date}</Table.Cell>
-                      <Table.Cell>{ex.amount}</Table.Cell>
-                      <Table.Cell>{ex.purpose}</Table.Cell>
-                      <Table.Cell>{ex.by}</Table.Cell>
-                      <Table.Cell>{ex.type.name}</Table.Cell>
-                    </Table.Row>
-                  )
-                })
-              }
-            </Table.Body>
-          </Table>
-          {this.props.children}
-        </Grid.Row>
-      </Grid>
+      <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
+        <Modal.Header>Add New Expenditure</Modal.Header>
+        <Modal.Content>
+          <Form size='small'>
+            <Form.Group>
+              <Form.Input label='Amount' type='text' placeholder='Expenditure amount' name='amount' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='By' type='text' placeholder='By' name='by' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Date' type='date' name='date' onChange={this.handleChange.bind(this)} />
+              <Form.Field>
+                <label>Types</label>
+                <Dropdown placeholder='Types' selection options={this.makeExpenditureTypeItems.bind(this)()} value={this.state.type} onChange={this.handleExpenditureTypeItems.bind(this)} />
+              </Form.Field>
+            </Form.Group>
+            <Form.TextArea label='Purpose' placeholder='Expenditure purpose ..' name='purpose' onChange={this.handleChange.bind(this)} />
+            <Form.Button type='button' floated='right' onClick={this.update.bind(this)}>Register</Form.Button>
+          </Form>
+        </Modal.Content>
+      </Modal>
     )
   }
 }
