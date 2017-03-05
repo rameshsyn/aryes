@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
+import { routerActions } from 'react-router-redux'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import {
   Input,
   Menu,
-  Icon
+  Icon,
+  Dropdown
 } from 'semantic-ui-react'
 
 class Navbar extends Component {
@@ -34,6 +38,17 @@ class Navbar extends Component {
           <Icon name={sidebar ? 'delete' : 'sidebar'} />
           Menus
         </Menu.Item>
+        <Menu.Item name='shortcut' active={activeItem === 'shortcut'} onClick={this.handleItemClick.bind(this)}>
+          <Dropdown icon='plus'>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => this.props.push('/management/student/new')}>Student</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.props.push('/management/session/new')}>Session</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.props.push('/accounting/expenditure/new')}>Expenditure</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.props.push('/service/new')}>Product</Dropdown.Item>
+              <Dropdown.Item onClick={() => this.props.push('/management/staff/new')}>Staff</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Menu.Item>
         <Menu.Menu position='right'>
           <Menu.Item>
             <Input icon='search' placeholder='Search...' />
@@ -48,4 +63,7 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar
+const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
+
+export default connect(null, mapDipatchToProps)(Navbar)
+
