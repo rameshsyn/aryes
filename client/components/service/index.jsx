@@ -1,11 +1,13 @@
 import React from 'react'
+import {
+  Container
+} from 'semantic-ui-react'
 
 const Service = ({children}) => {
-  const fallBack = <h1>Hello, This is a Service section</h1>
   return (
-    <div>
-      {children ? children : fallBack}
-    </div>
+    <Container>
+      {children}
+    </Container>
   )
 }
 

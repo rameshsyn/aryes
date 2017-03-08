@@ -8,7 +8,9 @@ import {
   Modal,
   Form,
   Divider,
-  Dropdown
+  Dropdown,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class NewStudent extends Component {
@@ -121,6 +123,13 @@ class NewStudent extends Component {
     })
   }
   render () {
+    if (this.props.data.loading) {
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
+    }
     return (
       <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
         <Modal.Header>Add New Student</Modal.Header>

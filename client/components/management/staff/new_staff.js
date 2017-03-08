@@ -7,7 +7,9 @@ import { bindActionCreators } from 'redux'
 import {
   Modal,
   Form,
-  Dropdown
+  Dropdown,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class Staff extends Component {
@@ -77,10 +79,14 @@ class Staff extends Component {
   }
   render () {
     if (this.props.data.loading) {
-      return <h1>loading</h1>
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
     }
     return (
-      <Modal open={true} onClose={this.handleModalClose.bind(this)}>
+      <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
         <Modal.Header>Add New Staff</Modal.Header>
         <Modal.Content>
           <Form size='small'>

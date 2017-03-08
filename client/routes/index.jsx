@@ -16,6 +16,7 @@ import {
   Inquiry,
   Income,
   Expenditure,
+  Service,
   Product,
   Offer,
   Setting,
@@ -64,7 +65,8 @@ const Routes = () => (
           <Route path='/accounting/expenditure/new' component={NewExpenditure} />
         </Route>
       </Route>
-      <Route path='/service' component={Product}>
+      <Route path='/service' component={Service}>
+        <IndexRoute component={Product} />
         <Route path='/service/new' component={NewProduct} />
       </Route>
       <Route path='/setting' component={Setting}>

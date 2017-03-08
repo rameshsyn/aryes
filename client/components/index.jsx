@@ -1,4 +1,4 @@
-import Home from './default'
+import Home from './home'
 import Dashboard from './dashboard'
 import Accounting from './accounting'
 import Management from './management'

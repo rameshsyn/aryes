@@ -10,13 +10,19 @@ import {
   Button,
   Divider,
   Container,
-  Header
+  Header,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class Session extends Component {
   render () {
     if (this.props.data.loading) {
-      return <h1>loading</h1>
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
     }
     return (
       <Grid padded>

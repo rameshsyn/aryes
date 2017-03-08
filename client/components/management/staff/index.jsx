@@ -7,13 +7,12 @@ import { bindActionCreators } from 'redux'
 import {
   Grid,
   Button,
-  Modal,
-  Form,
   Label,
-  Dropdown,
   Container,
   Header,
-  Divider
+  Divider,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class Staff extends Component {
@@ -75,7 +74,11 @@ class Staff extends Component {
   }
   render () {
     if (this.props.data.loading) {
-      return <h1>loading</h1>
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
     }
     return (
       <Grid padded>

@@ -62,7 +62,7 @@ class Room extends Component {
     if (this.props.data.loading) {
       return (
         <Dimmer active>
-          <Loader />
+          <Loader size='massive'>Loading ...</Loader>
         </Dimmer>
       )
     }
@@ -71,7 +71,7 @@ class Room extends Component {
         {
           this.props.data.expenditureTypes.map((e, i) => {
             return (
-              <Label as='a' color={e.label} size='large'>
+              <Label as='a' color={e.label} size='large' key={i}>
                 {e.name}
                 <Icon name='delete' circular />
               </Label>

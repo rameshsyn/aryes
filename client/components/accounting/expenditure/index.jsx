@@ -80,7 +80,7 @@ class Expenditure extends Component {
     if (this.props.data.loading) {
       return (
         <Dimmer active>
-          <Loader />
+          <Loader size='massive'>Loading ...</Loader>
         </Dimmer>
       )
     }

@@ -24,7 +24,7 @@ class SideMenu extends Component {
   render () {
     const { activeItem } = this.state
     return (
-      <Sidebar as={Menu} animation='scale down' width='thin' visible={this.props.visible} vertical inverted>
+      <Sidebar as={Menu} animation='push' width='thin' visible={this.props.visible} vertical inverted>
         <Menu.Item name='dashboard' active={activeItem === 'dashboard'} onClick={(e, ref) => this.handleItemClick(e, ref, '/dashboard')}>
           <Icon name='dashboard' />
           <b>Dashboard</b>

@@ -5,7 +5,9 @@ import { bindActionCreators } from 'redux'
 import {
   Divider,
   Menu,
-  Container
+  Container,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react'
 
 class Admin extends Component {
