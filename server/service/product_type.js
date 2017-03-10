@@ -4,6 +4,7 @@ import {
   GraphQLInt
 } from 'graphql'
 import ServiceCatType from '../institution/category/service_category_type'
+
 export default new GraphQLObjectType({
   name: 'product',
   description: 'product list',
@@ -17,7 +18,8 @@ export default new GraphQLObjectType({
       description: 'product name'
     },
     description: {
-      type: GraphQLString
+      type: GraphQLString,
+      description: 'product description'
     },
     cost: {
       type: GraphQLInt,

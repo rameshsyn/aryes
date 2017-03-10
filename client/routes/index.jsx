@@ -35,7 +35,8 @@ import {
   NewStaff,
   NewInquiry,
   NewProduct,
-  NewExpenditure
+  NewExpenditure,
+  UpdateProduct
 } from '../components'
 
 const Routes = () => (
@@ -68,6 +69,7 @@ const Routes = () => (
       <Route path='/service' component={Service}>
         <IndexRoute component={Product} />
         <Route path='/service/new' component={NewProduct} />
+        <Route path='/service/update/:productId' component={UpdateProduct} />
       </Route>
       <Route path='/setting' component={Setting}>
         <IndexRoute component={Admin} />

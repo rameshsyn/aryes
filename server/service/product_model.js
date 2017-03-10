@@ -1,14 +1,24 @@
 export default function (mongoose) {
   const Schema = mongoose.Schema
   const ServiceSchema = new Schema({
-    name: String,
+    name: {
+      type: String,
+      required: true
+    },
     description: String,
-    cost: Number,
+    cost: {
+      type: Number,
+      required: true
+    },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'servicecat'
+      ref: 'servicecat',
+      required: true
     },
-    date_created: Date
+    date_created: {
+      type: Date,
+      required: true
+    }
   })
   return mongoose.model('product', ServiceSchema)
 }

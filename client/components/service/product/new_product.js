@@ -7,7 +7,10 @@ import gql from 'graphql-tag'
 import {
   Modal,
   Form,
-  Dropdown
+  Dropdown,
+  Dimmer,
+  Loader,
+  Message
 } from 'semantic-ui-react'
 
 class Product extends Component {
@@ -18,21 +21,13 @@ class Product extends Component {
       cost: 0,
       description: '',
       category: '',
-      modalOpen: true
+      modalOpen: true,
+      message: '',
+      messageColor: 'grey',
+      formLoading: false
     }
   }
-  handleModalClose (e) {
-    this.setState({
-      modalOpen: false
-    })
-    // route to product page
-    this.props.push('/service')
-  }
-  handleCategoryItem (e, { value }) {
-    this.setState({
-      category: value
-    })
-  }
+  // Makes dropdown select items
   makeCategoryItems () {
     const { category } = this.props.data
     return category.map(c => {
@@ -43,6 +38,18 @@ class Product extends Component {
       }
     })
   }
+  handleModalClose (e) {
+    this.setState({
+      modalOpen: false
+    })
+    // Routes to product page
+    this.props.push('/service')
+  }
+  handleCategoryItem (e, { value }) {
+    this.setState({
+      category: value
+    })
+  }
   handleChange (e) {
     const name = e.target.name
     const value = e.target.value
@@ -50,17 +57,21 @@ class Product extends Component {
       [name]: value
     })
   }
-  update () {
+  add () {
     this.props.addNewProduct({
+      // Variables to pass in mutation
       variables: {
         name: this.state.name,
         description: this.state.description,
         cost: Number(this.state.cost),
-        category: this.state.category
+        category: this.state.category,
+        // Stores client side date
+        date_created: Date.now()
       },
       updateQueries: {
         getProducts: (prevQuery, newQuery) => {
           const newProduct = newQuery.mutationResult.data.addNewProduct
+          // Returns previous data with new added one
           return {
             product: [
               ...prevQuery.product,
@@ -71,29 +82,52 @@ class Product extends Component {
       }
     })
     .then(({ data }) => {
-      console.log('got data', data)
+      if (data) {
+        this.setState({
+          message: 'Product added !',
+          messageColor: 'green',
+          formLoading: false
+        })
+      }
     })
-    .catch((error) => {
-      console.log('there was an error sending the query', error)
+    .catch(error => {
+      if (error) {
+        this.setState({
+          message: 'Something went wrong !',
+          messageColor: 'red',
+          formLoading: false
+        })
+      }
     })
   }
   render () {
-    if (this.props.data.loading) {
-      return <h1>loading</h1>
+    const { loading } = this.props.data
+    const { formLoading, messageColor, message } = this.state
+    if (loading) {
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
     }
     return (
       <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
         <Modal.Header>Add New Product</Modal.Header>
         <Modal.Content>
-          <Form size='small'>
-            <Form.Input label='Product Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
-            <Form.Input label='Cost' type='text' name='cost' onChange={this.handleChange.bind(this)} />
+          <Message color={messageColor} hidden={message === ''}>
+            <Message.Header>{message}</Message.Header>
+          </Message>
+          <Form size='small' loading={formLoading}>
+            <Form.Group widths='equal'>
+              <Form.Input label='Product Name' placeholder='Product Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Cost' placeholder='Product cost' type='text' name='cost' onChange={this.handleChange.bind(this)} />
+            </Form.Group>
             <Form.Field>
               <label>Categories</label>
-              <Dropdown placeholder='Categories' search selection options={this.makeCategoryItems.bind(this)()} value={this.state.category} onChange={this.handleCategoryItem.bind(this)} />
+              <Dropdown placeholder='Categories' search selection options={this.makeCategoryItems.bind(this)()} onChange={this.handleCategoryItem.bind(this)} />
             </Form.Field>
-            <Form.TextArea label='Description' name='description' onChange={this.handleChange.bind(this)} />
-            <Form.Button type='button' color='green' floated='right' onClick={this.update.bind(this)}>Add</Form.Button>
+            <Form.TextArea label='Description' placeholder='Description' name='description' onChange={this.handleChange.bind(this)} />
+            <Form.Button type='button' color='green' floated='right' onClick={this.add.bind(this)}>Add</Form.Button>
           </Form>
         </Modal.Content>
       </Modal>
@@ -101,6 +135,7 @@ class Product extends Component {
   }
 }
 
+// Grapqh query
 const ProductQuery = gql`
 query getProducts {
   product {
@@ -115,9 +150,10 @@ query getProducts {
   }
 }`
 
+// Graph mutation
 const addNewProduct = gql`
-mutation addNewProduct($name: String, $description: String, $cost: Int, $category: String ) {
-  addNewProduct(name: $name, description: $description, cost: $cost, category: $category) {
+mutation addNewProduct($name: String!, $description: String, $cost: Int!, $category: String!, $date_created: String! ) {
+  addNewProduct(name: $name, description: $description, cost: $cost, category: $category, date_created: $date_created) {
     id
     name
     description
@@ -125,13 +161,14 @@ mutation addNewProduct($name: String, $description: String, $cost: Int, $categor
   }
 }`
 
-const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
-
+// Passes Graphql returned data to wrapped component's 'data' prop
 const ProductWithData = compose(
   graphql(ProductQuery),
   graphql(addNewProduct, {
     name: 'addNewProduct'
   })
 )(Product)
+
+const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
 
 export default connect(null, mapDipatchToProps)(ProductWithData)

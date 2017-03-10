@@ -10,7 +10,12 @@ export default function (mongoose) {
     room: {
       type: Schema.Types.ObjectId,
       ref: 'room'
-    }
+    },
+    students: [{
+      type: Schema.Types.ObjectId,
+      ref: 'student'
+    }],
+    active: Boolean
   })
   return mongoose.model('session', SessionSchema)
 }

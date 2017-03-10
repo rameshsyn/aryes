@@ -28,6 +28,7 @@ import NewStaff from './management/staff/new_staff'
 import NewInquiry from './management/inquiry/new_inquiry'
 import NewProduct from './service/product/new_product'
 import NewExpenditure from './accounting/expenditure/new_expenditure'
+import UpdateProduct from './service/product/update_product'
 
 export {
   Home,
@@ -59,5 +60,6 @@ export {
   NewStaff,
   NewInquiry,
   NewProduct,
-  NewExpenditure
+  NewExpenditure,
+  UpdateProduct
 }
