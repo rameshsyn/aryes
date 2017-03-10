@@ -8,73 +8,92 @@ import {
   Grid,
   Button,
   Divider,
-  Label,
   Container,
-  Header
+  Header,
+  Dimmer,
+  Loader,
+  Card,
+  Icon,
+  Modal
 } from 'semantic-ui-react'
 
 class Product extends Component {
-  constructor (props) {
-    super(props)
+  constructor () {
+    super()
     this.state = {
-      name: '',
-      cost: 0,
-      description: '',
-      category: ''
+      productId: '',
+      confirm: false
     }
   }
-  handleCategoryItem (e, { value }) {
+  displayProducts () {
+    const { product } = this.props.data
+    return product.map((pr, i) => {
+      return (
+        <Card key={i} color={pr.category.label}>
+          <Card.Content>
+            <Card.Header>
+              {pr.name}
+            </Card.Header>
+            <Card.Meta>
+             Rs. {pr.cost}
+            </Card.Meta>
+            <Card.Description>
+              {pr.description}
+            </Card.Description>
+          </Card.Content>
+          <Card.Content>
+            <Button floated='right' compact basic>
+              <Icon name='edit' color='green' circular link onClick={this.handleEditClick.bind(this, pr.id)} />
+              <Icon name='delete' color='red' circular link onClick={this.handleDeleteClick.bind(this, pr.id)} />
+            </Button>
+          </Card.Content>
+        </Card>
+      )
+    })
+  }
+  handleEditClick (id) {
+    this.props.push(`/service/update/${id}`)
+  }
+  handleDeleteClick (id) {
     this.setState({
-      category: value
+      confirm: true,
+      productId: id
     })
   }
-  makeCategoryItems () {
-    const { category } = this.props.data
-    return category.map(c => {
-      return {
-        key: c.id,
-        text: c.name,
-        value: c.id
-      }
-    })
-  }
-  handleChange (e) {
-    const name = e.target.name
-    const value = e.target.value
-    this.setState({
-      [name]: value
-    })
-  }
-  update () {
-    this.props.addNewProduct({
+  handleConfirm () {
+    const { deleteProduct } = this.props
+    deleteProduct({
       variables: {
-        name: this.state.name,
-        description: this.state.description,
-        cost: Number(this.state.cost),
-        category: this.state.category
-      },
-      updateQueries: {
-        getProducts: (prevQuery, newQuery) => {
-          const newProduct = newQuery.mutationResult.data.addNewProduct
-          return {
-            product: [
-              ...prevQuery.product,
-              newProduct
-            ]
-          }
-        }
+        id: this.state.productId
       }
     })
     .then(({ data }) => {
-      console.log('got data', data)
+      // Refetches all the products
+      // to keep Apollo Global cache consistent
+      this.props.data.refetch()
     })
     .catch((error) => {
-      console.log('there was an error sending the query', error)
+      console.log(error)
+    })
+    this.setState({
+      confirm: false
+    })
+  }
+  handleCancel () {
+    this.setState({
+      confirm: false
     })
   }
   render () {
-    if (this.props.data.loading) {
-      return <h1>loading</h1>
+    const { loading } = this.props.data
+    const { push, children } = this.props
+    const { confirm } = this.state
+    if (loading) {
+      return (
+        <Dimmer active>
+          <Loader size='massive'>Loading ...</Loader>
+        </Dimmer>
+      )
     }
     return (
       <Grid padded>
@@ -88,19 +107,32 @@ class Product extends Component {
         <Divider />
         <Grid.Row>
           <Container>
-            <Button floated='right' onClick={() => this.props.push('/service/new')}>New Product</Button>
+            <Button floated='right' onClick={() => push('/service/new')}>New Product</Button>
           </Container>
         </Grid.Row>
         <Divider />
         <Grid.Row>
-          {
-            this.props.data.product.map((pr, i) => {
-              return <Label key={i}>{pr.name}</Label>
-            })
-          }
+          <Container>
+            <Modal open={confirm} basic size='small'>
+              <Modal.Header>
+                <h1 style={{textAlign: 'center'}}>Are you sure want to remove ?</h1>
+              </Modal.Header>
+              <Modal.Actions>
+                <Button basic color='green' inverted onClick={this.handleCancel.bind(this)}>
+                  <Icon name='remove' /> No
+                </Button>
+                <Button color='red' inverted onClick={this.handleConfirm.bind(this)}>
+                  <Icon name='checkmark' /> Yes
+                </Button>
+              </Modal.Actions>
+            </Modal>
+            <Card.Group itemsPerRow={3}>
+              {this.displayProducts()}
+            </Card.Group>
+          </Container>
         </Grid.Row>
         <Grid.Row>
-          {this.props.children}
+          {children}
         </Grid.Row>
       </Grid>
     )
@@ -114,29 +146,27 @@ query getProducts {
     name
     description
     cost
-  }
-  category {
-    id
-    name
+    category {
+      id
+      label
+    }
   }
 }`
 
-const addNewProduct = gql`
-mutation addNewProduct($name: String, $description: String, $cost: Int, $category: String ) {
-  addNewProduct(name: $name, description: $description, cost: $cost, category: $category) {
-    id
-    name
-    description
-    cost
-  }
-}`
+const deleteProduct = gql`
+  mutation deleteProduct($id: String!) {
+    deleteProduct(id: $id) {
+      id
+    }
+  } 
+`
 
 const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
 
 const ProductWithData = compose(
   graphql(ProductQuery),
-  graphql(addNewProduct, {
-    name: 'addNewProduct'
+  graphql(deleteProduct, {
+    name: 'deleteProduct'
   })
 )(Product)
 
