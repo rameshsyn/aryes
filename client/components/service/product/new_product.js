@@ -57,48 +57,71 @@ class Product extends Component {
       [name]: value
     })
   }
+  // Form validation
+  validate () {
+    const {name, cost, category} = this.state
+    const shouldValidate = [name, cost, category]
+    let count = 0
+    shouldValidate.map(input => {
+      // Counts empty fields
+      if ((input === '') || (input === 0)) {
+        count++
+      }
+    })
+    // Returns true on all required form fields are filled.
+    return count === 0
+  }
   add () {
-    this.props.addNewProduct({
-      // Variables to pass in mutation
-      variables: {
-        name: this.state.name,
-        description: this.state.description,
-        cost: Number(this.state.cost),
-        category: this.state.category,
-        // Stores client side date
-        date_created: Date.now()
-      },
-      updateQueries: {
-        getProducts: (prevQuery, newQuery) => {
-          const newProduct = newQuery.mutationResult.data.addNewProduct
-          // Returns previous data with new added one
-          return {
-            product: [
-              ...prevQuery.product,
-              newProduct
-            ]
+    const { addNewProduct } = this.props
+    if (this.validate()) {
+      addNewProduct({
+        // Variables to pass in mutation
+        variables: {
+          name: this.state.name,
+          description: this.state.description,
+          cost: Number(this.state.cost),
+          category: this.state.category,
+          // Stores client side date
+          date_created: Date.now()
+        },
+        updateQueries: {
+          getProducts: (prevQuery, newQuery) => {
+            const newProduct = newQuery.mutationResult.data.addNewProduct
+            // Returns previous data with new added one
+            return {
+              product: [
+                ...prevQuery.product,
+                newProduct
+              ]
+            }
           }
         }
-      }
-    })
-    .then(({ data }) => {
-      if (data) {
-        this.setState({
-          message: 'Product added !',
-          messageColor: 'green',
-          formLoading: false
-        })
-      }
-    })
-    .catch(error => {
-      if (error) {
-        this.setState({
-          message: 'Something went wrong !',
-          messageColor: 'red',
-          formLoading: false
-        })
-      }
-    })
+      })
+      .then(({ data }) => {
+        if (data) {
+          this.setState({
+            message: 'Product added !',
+            messageColor: 'green',
+            formLoading: false
+          })
+        }
+      })
+      .catch(error => {
+        if (error) {
+          this.setState({
+            message: 'Something went wrong !',
+            messageColor: 'red',
+            formLoading: false
+          })
+        }
+      })
+    } else {
+      this.setState({
+        message: 'Fill a required field !',
+        messageColor: 'red',
+        formLoading: false
+      })
+    }
   }
   render () {
     const { loading } = this.props.data

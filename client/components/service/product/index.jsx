@@ -42,10 +42,8 @@ class Product extends Component {
             </Card.Description>
           </Card.Content>
           <Card.Content>
-            <Button floated='right' compact basic>
-              <Icon name='edit' color='green' circular link onClick={this.handleEditClick.bind(this, pr.id)} />
-              <Icon name='delete' color='red' circular link onClick={this.handleDeleteClick.bind(this, pr.id)} />
-            </Button>
+            <Icon name='edit' color='green' circular link onClick={this.handleEditClick.bind(this, pr.id)} />
+            <Icon name='delete' color='red' circular link onClick={this.handleDeleteClick.bind(this, pr.id)} />
           </Card.Content>
         </Card>
       )
