@@ -36,7 +36,10 @@ import {
   NewInquiry,
   NewProduct,
   NewExpenditure,
-  UpdateProduct
+  UpdateProduct,
+  FilterSession,
+  UpdateSession,
+  SessionProfile
 } from '../components'
 
 const Routes = () => (
@@ -50,7 +53,11 @@ const Routes = () => (
           <Route path='/management/student/new' component={NewStudent} />
         </Route>
         <Route path='/management/session' component={Session}>
+          <IndexRoute component={FilterSession} />
           <Route path='/management/session/new' component={NewSession} />
+          <Route path='/management/session/update/:sessionId' component={UpdateSession} />
+          <Route path='/management/session/filter/:type' component={FilterSession} />
+          <Route path='/management/session/filter/:type/:time' component={FilterSession} />
         </Route>
         <Route path='/management/staff' component={Staff}>
           <Route path='/management/staff/new' component={NewStaff} />
@@ -89,6 +96,7 @@ const Routes = () => (
         </Route>
       </Route>
       <Route path='/student/:profileId' component={StudentProfile} />
+      <Route path='/session/:sessionId' component={SessionProfile} />
     </Route>
   </Router>
 )

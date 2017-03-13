@@ -29,6 +29,9 @@ import NewInquiry from './management/inquiry/new_inquiry'
 import NewProduct from './service/product/new_product'
 import NewExpenditure from './accounting/expenditure/new_expenditure'
 import UpdateProduct from './service/product/update_product'
+import FilterSession from './management/session/filter_session'
+import UpdateSession from './management/session/update_session'
+import SessionProfile from './management/session/profile_session'
 
 export {
   Home,
@@ -61,5 +64,8 @@ export {
   NewInquiry,
   NewProduct,
   NewExpenditure,
-  UpdateProduct
+  UpdateProduct,
+  FilterSession,
+  UpdateSession,
+  SessionProfile
 }

@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import gql from 'graphql-tag'
 import {
   Grid,
-  Label,
+  Menu,
   Button,
   Divider,
   Container,
@@ -16,8 +16,20 @@ import {
 } from 'semantic-ui-react'
 
 class Session extends Component {
+  constructor () {
+    super()
+    this.state = {
+      activeItem: 'live'
+    }
+  }
+  handleItemClick (e, { name }, path) {
+    this.setState({ activeItem: name })
+    this.props.push(path)
+  }
   render () {
-    if (this.props.data.loading) {
+    const { loading } = this.props.data
+    const { activeItem } = this.state
+    if (loading) {
       return (
         <Dimmer active>
           <Loader size='massive'>Loading ...</Loader>
@@ -36,19 +48,30 @@ class Session extends Component {
         <Divider />
         <Grid.Row>
           <Container>
+            <Button floated='right'>Filter</Button>
             <Button floated='right' onClick={() => this.props.push('/management/session/new')}>New Session</Button>
           </Container>
         </Grid.Row>
-        <Divider />
         <Grid.Row>
-          {
-            this.props.data.session.map((s, i) => {
-              return <Label key={i}>{s.name}</Label>
-            })
-          }
-        </Grid.Row>
-        <Grid.Row>
-          {this.props.children}
+          <Container>
+            <Menu tabular size='large' color='green'>
+              <Menu.Item name='live' active={activeItem === 'live'} onClick={(e, ref) => this.handleItemClick(e, ref, '/management/session/filter/live')}>
+                Live
+              </Menu.Item>
+              <Menu.Item name='all' active={activeItem === 'all'} onClick={(e, ref) => this.handleItemClick(e, ref, '/management/session/filter/all')}>
+                All
+              </Menu.Item>
+              <Menu.Item name='active' active={activeItem === 'active'} onClick={(e, ref) => this.handleItemClick(e, ref, '/management/session/filter/active')}>
+                Active
+              </Menu.Item>
+              <Menu.Item name='inactive' active={activeItem === 'inactive'} onClick={(e, ref) => this.handleItemClick(e, ref, '/management/session/filter/inactive')}>
+                Inactive
+              </Menu.Item>
+            </Menu>
+            <Container>
+              {this.props.children}
+            </Container>
+          </Container>
         </Grid.Row>
       </Grid>
     )

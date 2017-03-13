@@ -11,18 +11,21 @@ import {
   Dropdown,
   Dimmer,
   Loader,
-  Message
+  Message,
+  Radio
 } from 'semantic-ui-react'
 
 class Session extends Component {
   constructor (props) {
     super(props)
     this.state = {
+      sessionId: '',
       name: '',
       instructor: '',
       room: '',
       timePeriod: '',
       product: '',
+      active: true,
       modalOpen: true,
       message: '',
       messageColor: 'grey',
@@ -110,6 +113,11 @@ class Session extends Component {
       [name]: value
     })
   }
+  handleRadioToggle (e) {
+    this.setState({
+      active: !this.state.active
+    })
+  }
   // Form validation
   validate () {
     const {name, instructor, timePeriod, product, room} = this.state
@@ -125,32 +133,26 @@ class Session extends Component {
     return count === 0
   }
   add () {
-    const { addNewSession } = this.props
+    const { updateSession } = this.props
     if (this.validate()) {
-      addNewSession({
+      updateSession({
         variables: {
+          id: this.state.sessionId,
           name: this.state.name,
           instructor: this.state.instructor,
           room: this.state.room,
           timePeriod: this.state.timePeriod,
-          product: this.state.product
-        },
-        updateQueries: {
-          getSessions: (prevQuery, newQuery) => {
-            const update = newQuery.mutationResult.data.addNewSession
-            return {
-              session: [
-                ...prevQuery.session,
-                update
-              ]
-            }
-          }
+          product: this.state.product,
+          active: this.state.active
         }
       })
       .then(({ data }) => {
+        // Refetches all the products
+        // to keep Apollo global cache consistent
+        this.props.data.refetch()
         if (data) {
           this.setState({
-            message: 'Session Added !',
+            message: 'Session Updated !',
             messageColor: 'green',
             formLoading: false
           })
@@ -173,6 +175,23 @@ class Session extends Component {
       })
     }
   }
+  componentDidMount () {
+    // Reason behind timeout:
+    // data prop won't be get passed
+    // to wrapped component when componentDidMount executes
+    setTimeout(() => {
+      const { id, name, instructor, room, product, timePeriod, active } = this.props.data.session[0]
+      this.setState({
+        sessionId: id,
+        name,
+        timePeriod,
+        active,
+        instructor: instructor.id,
+        room: room.id,
+        product: product.id
+      })
+    }, 500)
+  }
   render () {
     const { loading } = this.props.data
     const { messageColor, message, formLoading } = this.state
@@ -187,13 +206,13 @@ class Session extends Component {
       <Grid>
         <Grid.Row>
           <Modal open={this.state.modalOpen} onClose={this.handleModalClose.bind(this)}>
-            <Modal.Header>Add New Session</Modal.Header>
+            <Modal.Header>Update Session</Modal.Header>
             <Modal.Content>
               <Message color={messageColor} hidden={message === ''}>
                 <Message.Header>{message}</Message.Header>
               </Message>
               <Form size='small' widths='equal' loading={formLoading}>
-                <Form.Input label='Session Name' type='text' placeholder='Session Name' name='name' onChange={this.handleChange.bind(this)} />
+                <Form.Input label='Session Name' type='text' placeholder='Session Name' name='name' value={this.state.name} onChange={this.handleChange.bind(this)} />
                 <Form.Field>
                   <label>Product</label>
                   <Dropdown placeholder='Products' search selection options={this.makeProductItems.bind(this)()} onChange={this.handleProductItem.bind(this)} />
@@ -213,8 +232,12 @@ class Session extends Component {
                     <labe>Time Peroid</labe>
                     <Dropdown placeholder='Periods' search selection options={this.makeTimeperiodItems.bind(this)()} value={this.state.timePeriod} onChange={this.handleTimeperiodItem.bind(this)} />
                   </Form.Field>
+                  <Form.Field>
+                    <label>Active</label>
+                    <Radio toggle type='radio' name='active' onChange={this.handleRadioToggle.bind(this)} checked={this.state.active} />
+                  </Form.Field>
                 </Form.Group>
-                <Form.Button type='button' color='green' floated='right' onClick={this.add.bind(this)}>Add</Form.Button>
+                <Form.Button type='button' color='green' floated='right' onClick={this.add.bind(this)}>Update</Form.Button>
               </Form>
             </Modal.Content>
           </Modal>
@@ -225,12 +248,26 @@ class Session extends Component {
 }
 
 const SessionQuery = gql`
-  query getSessions {
-    session {
+  query getSessions($sessionId: String) {
+    session(_id: $sessionId) {
       id
       name
-    }
-    staff {
+      timePeriod
+      active
+      instructor {
+        id
+        name
+      }
+      room {
+        id
+        name
+      }
+      product {
+        id
+        name
+      }
+    } 
+     staff {
       id
       name
     }
@@ -241,15 +278,29 @@ const SessionQuery = gql`
     product {
       id
       name
-    }
+    }  
   }
 `
 
 const SessionMutation = gql`
-  mutation addNewSession($name: String!, $instructor: String!, $room: String!, $timePeriod: String!, $product: String!) {
-    addNewSession(name: $name, instructor: $instructor, room: $room, timePeriod: $timePeriod, product: $product) {
-     id
-     name
+  mutation updateSession($id: String!, $name: String!, $instructor: String!, $room: String!, $timePeriod: String!, $product: String!, $active: Boolean!) {
+    updateSession(id: $id, name: $name, instructor: $instructor, room: $room, timePeriod: $timePeriod, product: $product, active: $active) {
+      id
+      name
+      timePeriod
+      active
+      instructor {
+        id
+        name
+      }
+      room {
+        id
+        name
+      }
+      product {
+        id
+        name
+      }
     }
   }
 `
@@ -257,9 +308,17 @@ const SessionMutation = gql`
 const mapDipatchToProps = (dispatch) => bindActionCreators(routerActions, dispatch)
 
 const SessionWithData = compose(
-  graphql(SessionQuery),
+  graphql(SessionQuery, {
+    options: ({params}) => {
+      return {
+        variables: {
+          sessionId: params.sessionId
+        }
+      }
+    }
+  }),
   graphql(SessionMutation, {
-    name: 'addNewSession'
+    name: 'updateSession'
   })
 )(Session)
 
