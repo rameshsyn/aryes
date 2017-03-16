@@ -8,7 +8,8 @@ import {
   Button,
   Dimmer,
   Loader,
-  Divider
+  Divider,
+  Message
 } from 'semantic-ui-react'
 
 class General extends Component {
@@ -18,7 +19,9 @@ class General extends Component {
       name: '',
       location: '',
       phone: '',
-      email: ''
+      email: '',
+      message: '',
+      messageColor: 'grey'
     }
   }
   handleChange (e) {
@@ -28,30 +31,73 @@ class General extends Component {
       [name]: value
     })
   }
-  update () {
-    this.props.updateInstitutionInfo({
-      variables: {
-        id: this.state.id,
-        name: this.state.name,
-        location: this.state.location,
-        phone: this.state.phone,
-        email: this.state.email
-      },
-      updateQueries: {
-        getInstitutionInfo: (prevQuery, newQuery) => {
-          const update = newQuery.mutationResult.data.updateInstitutionInfo
-          return {
-            institution_info: update
-          }
-        }
+  // Form validation
+  validate () {
+    const { name, location, email, phone } = this.state
+    const shouldValidate = [name, location, email, phone]
+    let count = 0
+    shouldValidate.map(input => {
+      // Counts empty fields
+      if ((input === '') || (input === 0)) {
+        count++
       }
     })
-    .then(({ data }) => {
-      console.log('got data', data)
-    })
-    .catch((error) => {
-      console.log('there was an error sending the query', error)
-    })
+    // Returns true on all required form fields are filled.
+    return count === 0
+  }
+  update () {
+    const { updateInstitutionInfo } = this.props
+    const { name, location, email, phone } = this.state
+    if (this.validate()) {
+      updateInstitutionInfo({
+        variables: {
+          name,
+          location,
+          email,
+          phone
+        },
+        updateQueries: {
+          getInstitutionInfo: (prevQuery, newQuery) => {
+            const update = newQuery.mutationResult.data.updateInstitutionInfo
+            return {
+              institution_info: update
+            }
+          }
+        }
+      })
+      .then(({ data }) => {
+        if (data) {
+          this.setState({
+            message: 'Information updated !',
+            messageColor: 'green'
+          })
+        }
+      })
+      .catch((error) => {
+        if (error) {
+          this.setState({
+            message: 'Something went wrong !',
+            messageColor: 'red'
+          })
+        }
+      })
+    } else {
+      this.setState({
+        message: 'Fill out required form fields',
+        messageColor: 'red'
+      })
+    }
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.data.institution_info) {
+      const {data: {institution_info: {name, contact, location}}} = nextProps
+      this.setState({
+        name,
+        location,
+        email: contact.email,
+        phone: contact.phone
+      })
+    }
   }
   render () {
     if (this.props.data.loading) {
@@ -61,27 +107,30 @@ class General extends Component {
         </Dimmer>
       )
     }
-    const { name, location, contact } = this.props.data.institution_info
+    const { messageColor, message, name, location, email, phone } = this.state
     return (
       <Container text>
         <div>
           <h3>Name: <i>{ name }</i></h3>
           <h3>Location: <i>{ location }</i></h3>
-          <h3>Email: <i>{ contact.email }</i></h3>
-          <h3>Phone: <i>{ contact.phone }</i></h3>
+          <h3>Email: <i>{ email }</i></h3>
+          <h3>Phone: <i>{ phone }</i></h3>
         </div>
         <Divider />
         <Modal trigger={<Button color='green'>Update</Button>}>
           <Modal.Header>Update Institution Information</Modal.Header>
           <Modal.Content>
+            <Message color={messageColor} hidden={message === ''}>
+              <Message.Header>{message}</Message.Header>
+            </Message>
             <Form size='big'>
-              <Form.Input label='Institution name' placeholder={name} type='text' name='name' onChange={this.handleChange.bind(this)} />
+              <Form.Input label='Institution name' type='text' name='name' value={name} onChange={this.handleChange.bind(this)} />
               <Form.Group widths='equal'>
-                <Form.Input label='Phone' type='text' placeholder={contact.phone} name='phone' onChange={this.handleChange.bind(this)} />
-                <Form.Input label='Email' type='text' placeholder={contact.email} name='email' onChange={this.handleChange.bind(this)} />
+                <Form.Input label='Phone' type='text' name='phone' value={phone} onChange={this.handleChange.bind(this)} />
+                <Form.Input label='Email' type='text' name='email' value={email} onChange={this.handleChange.bind(this)} />
               </Form.Group>
-              <Form.Input label='Location' type='text' placeholder={location} name='location' onChange={this.handleChange.bind(this)} />
-              <Form.Button type='button' color='green' onClick={this.update.bind(this)}>Submit</Form.Button>
+              <Form.Input label='Location' type='text' name='location' value={location} onChange={this.handleChange.bind(this)} />
+              <Form.Button type='button' color='green' onClick={this.update.bind(this)}>Update</Form.Button>
             </Form>
           </Modal.Content>
         </Modal>
@@ -104,7 +153,7 @@ query getInstitutionInfo {
 }`
 
 const InstitutionMutation = gql`
-mutation updateInstitutionInfo($name: String, $location: String, $email: String, $phone: String) {
+mutation updateInstitutionInfo($name: String!, $location: String!, $email: String!, $phone: String!) {
   updateInstitutionInfo(name: $name, location: $location, email: $email, phone: $phone) {
     id
     name

@@ -175,22 +175,17 @@ class Session extends Component {
       })
     }
   }
-  componentDidMount () {
-    // Reason behind timeout:
-    // data prop won't be get passed
-    // to wrapped component when componentDidMount executes
-    setTimeout(() => {
-      const { id, name, instructor, room, product, timePeriod, active } = this.props.data.session[0]
-      this.setState({
-        sessionId: id,
-        name,
-        timePeriod,
-        active,
-        instructor: instructor.id,
-        room: room.id,
-        product: product.id
-      })
-    }, 500)
+  componentWillReceiveProps (nextProps) {
+    const { id, name, instructor, room, product, timePeriod, active } = nextProps.data.session[0]
+    this.setState({
+      sessionId: id,
+      name,
+      timePeriod,
+      active,
+      instructor: instructor.id,
+      room: room.id,
+      product: product.id
+    })
   }
   render () {
     const { loading } = this.props.data

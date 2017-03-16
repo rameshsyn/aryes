@@ -116,20 +116,15 @@ class Product extends Component {
       })
     }
   }
-  componentDidMount () {
-    // Reason behind timeout:
-    // data prop won't be get passed
-    // to wrapped component when componentDidMount executes
-    setTimeout(() => {
-      const { id, name, description, cost, category } = this.props.data.product[0]
-      this.setState({
-        id,
-        name,
-        description,
-        cost,
-        category: category.id
-      })
-    }, 500)
+  componentWillReceiveProps (nextProps) {
+    const { id, name, description, cost, category } = nextProps.data.product[0]
+    this.setState({
+      id,
+      name,
+      description,
+      cost,
+      category: category.id
+    })
   }
   render () {
     const { loading } = this.props.data
