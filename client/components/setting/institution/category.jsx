@@ -125,7 +125,7 @@ class Category extends Component {
             <Form size='small'>
               <Form.Input label='Category Name' placeholder='Name' type='text' name='name' onChange={this.handleChange.bind(this)} />
               <Form.Field>
-                <label>Label</label>
+                <label>Label: {this.state.label}</label>
                 <Form.Group>
                   <Label as='a' color='orange' size='medium' onClick={this.handleLabelChange.bind(this)}>orange</Label>
                   <Label as='a' color='blue' size='medium' onClick={this.handleLabelChange.bind(this)}>blue</Label>

@@ -1,22 +1,25 @@
 import { Institution } from '../../../models'
 import InstitutionType from './institution_info_type'
-import { GraphQLString } from 'graphql'
+import {
+  GraphQLString,
+  GraphQLNonNull
+} from 'graphql'
 
 export default {
   updateInstitutionInfo: {
     type: InstitutionType,
     args: {
       name: {
-        type: GraphQLString
+        type: new GraphQLNonNull(GraphQLString)
       },
       location: {
-        type: GraphQLString
+        type: new GraphQLNonNull(GraphQLString)
       },
       email: {
-        type: GraphQLString
+        type: new GraphQLNonNull(GraphQLString)
       },
       phone: {
-        type: GraphQLString
+        type: new GraphQLNonNull(GraphQLString)
       }
     },
     resolve: (root, params, options) => {
@@ -25,14 +28,24 @@ export default {
           if (err) {
             reject(err)
           } else {
+            // Save instituition information for the first time
             if (!info) {
-              new Institution(params).save((err, institution) => {
+              const newInformation = {
+                name: params.name,
+                location: params.location,
+                contact: {
+                  email: params.email,
+                  phone: params.phone
+                }
+              }
+              new Institution(newInformation).save((err, institution) => {
                 if (err) {
                   reject(err)
                 } else {
                   resolve(institution)
                 }
               })
+            // Other wise update it
             } else {
               info.name = params.name
               info.location = params.location
@@ -40,11 +53,11 @@ export default {
                 email: params.email,
                 phone: params.phone
               }
-              info.save((err) => {
+              info.save((err, newInfo) => {
                 if (err) {
                   reject(err)
                 } else {
-                  resolve(info)
+                  resolve(newInfo)
                 }
               })
             }

@@ -5,9 +5,10 @@ import { bindActionCreators } from 'redux'
 import {
   Divider,
   Menu,
+  Segment,
   Container,
-  Dimmer,
-  Loader
+  Grid,
+  Header
 } from 'semantic-ui-react'
 
 class Institution extends Component {
@@ -17,38 +18,48 @@ class Institution extends Component {
       activeItem: 'general'
     }
   }
-  handleItemClick (e, { name }) {
+  handleItemClick (e, { name }, path) {
     this.setState({ activeItem: name })
+    this.props.push(path)
   }
   render () {
     const { activeItem } = this.state
     return (
-      <Container>
-        <Divider horizontal>Setting</Divider>
-        <Menu tabular size='large' color='green'>
-          <Menu.Item name='general' active={activeItem === 'general'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/general')}>General</b>
-          </Menu.Item>
-          <Menu.Item name='category' active={activeItem === 'category'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/category')}>Category</b>
-          </Menu.Item>
-          <Menu.Item name='room' active={activeItem === 'room'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/room')}>Room</b>
-          </Menu.Item>
-          <Menu.Item name='position' active={activeItem === 'position'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/position')}>Position</b>
-          </Menu.Item>
-          <Menu.Item name='offer' active={activeItem === 'offer'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/offer')}>Offer</b>
-          </Menu.Item>
-          <Menu.Item name='expenditureTypes' active={activeItem === 'expenditureTypes'} onClick={this.handleItemClick.bind(this)}>
-            <b onClick={() => this.props.push('/setting/institution/expenditure-types')}>Expenditure type</b>
-          </Menu.Item>
-        </Menu>
+      <Grid padded>
+        <Grid.Row>
+          <Container>
+            <Header as='h3' textAlign='center'>
+              Setting
+            </Header>
+          </Container>
+        </Grid.Row>
+        <Divider />
         <Container>
-          {this.props.children}
+          <Menu tabular size='large' color='green'>
+            <Menu.Item name='general' active={activeItem === 'general'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/general')}>
+              General
+            </Menu.Item>
+            <Menu.Item name='category' active={activeItem === 'category'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/category')}>
+              Category
+            </Menu.Item>
+            <Menu.Item name='room' active={activeItem === 'room'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/room')}>
+              Room
+            </Menu.Item>
+            <Menu.Item name='position' active={activeItem === 'position'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/position')}>
+              Staff Position
+            </Menu.Item>
+            <Menu.Item name='offer' active={activeItem === 'offer'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/offer')}>
+              Offer
+            </Menu.Item>
+            <Menu.Item name='expenditureTypes' active={activeItem === 'expenditureTypes'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/institution/expenditure-types')}>
+              Expenditure Type
+            </Menu.Item>
+          </Menu>
+          <Segment>
+            {this.props.children}
+          </Segment>
         </Container>
-      </Container>
+      </Grid>
     )
   }
 }
