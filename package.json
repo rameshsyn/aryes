@@ -29,6 +29,7 @@
     "graphql": "^0.9.0",
     "graphql-tag": "^1.2.4",
     "immutability-helper": "^2.1.1",
+    "lodash": "^4.17.4",
     "moment": "^2.17.1",
     "mongoose": "4.7.6",
     "morgan": "1.7.0",
