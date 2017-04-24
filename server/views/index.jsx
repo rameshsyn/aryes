@@ -1,6 +1,6 @@
 import React from 'react'
 
-const App = ({ title, description }) => (
+const App = ({ title, description, app }) => (
   <html lang='en'>
     <head>
       <meta charSet='UTF-8' />
@@ -14,7 +14,9 @@ const App = ({ title, description }) => (
     <body>
       <div
         id='app'
-      />
+      >
+        { app }
+      </div>
       <script src='/static/scripts/commons.js' />
       <script src='/static/scripts/main.js' />
     </body>

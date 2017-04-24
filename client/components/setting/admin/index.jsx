@@ -35,7 +35,6 @@ class Admin extends Component {
         </Grid.Row>
         <Divider />
         <Container>
-          <Divider horizontal>Setting</Divider>
           <Menu tabular size='large' color='green'>
             <Menu.Item name='account' active={activeItem === 'account'} onClick={(e, ref) => this.handleItemClick(e, ref, '/setting/admin/account')}>
               Account

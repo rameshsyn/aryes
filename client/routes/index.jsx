@@ -39,12 +39,14 @@ import {
   UpdateProduct,
   FilterSession,
   UpdateSession,
-  SessionProfile
+  SessionProfile,
+  Login
 } from '../components'
 
 const Routes = () => (
   <Router history={syncHistoryWithStore(browserHistory, store)}>
-    <Route path='/' component={Home}>
+    <Route path='/' component={Login} />
+    <Route path='/test' component={Home}>
       <IndexRoute component={Dashboard} />
       <Route path='/dashboard' component={Dashboard} />
       <Route path='/management' component={Management}>

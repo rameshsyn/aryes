@@ -16,6 +16,7 @@ import PositionQuery from '../controllers/institution/position/position_query'
 import ExpenditureTypesQuery from '../controllers/institution/expenditure_type/expenditure_types_query'
 import InquiryQuery from '../controllers/management/inquiry/inquiry_query'
 import ExpenditureQuery from '../controllers/accounting/expenditure/expenditure_query'
+import AdminQuery from '../controllers/admin/admin_query'
 
 // Get all graphQL mutation types
 import OfferMutation from '../controllers/institution/offer/offer_mutation'
@@ -30,6 +31,7 @@ import PositionMutation from '../controllers/institution/position/position_mutat
 import ExpenditureTypesMutation from '../controllers/institution/expenditure_type/expenditure_types_mutation'
 import InquiryMutation from '../controllers/management/inquiry/inquiry_mutation'
 import ExpenditureMutation from '../controllers/accounting/expenditure/expenditure_mutation'
+import AdminMutation from '../controllers/admin/admin_mutation'
 
 export default new GraphQLSchema({
   query: new GraphQLObjectType({
@@ -47,7 +49,8 @@ export default new GraphQLSchema({
       ...PositionQuery,
       ...ExpenditureTypesQuery,
       ...InquiryQuery,
-      ...ExpenditureQuery
+      ...ExpenditureQuery,
+      ...AdminQuery
     }
   }),
   mutation: new GraphQLObjectType({
@@ -65,7 +68,8 @@ export default new GraphQLSchema({
       ...PositionMutation,
       ...ExpenditureTypesMutation,
       ...InquiryMutation,
-      ...ExpenditureMutation
+      ...ExpenditureMutation,
+      ...AdminMutation
     }
   })
 })

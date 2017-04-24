@@ -32,6 +32,7 @@ import UpdateProduct from './service/product/update_product'
 import FilterSession from './management/session/filter_session'
 import UpdateSession from './management/session/update_session'
 import SessionProfile from './management/session/profile_session'
+import Login from './login'
 
 export {
   Home,
@@ -67,5 +68,6 @@ export {
   UpdateProduct,
   FilterSession,
   UpdateSession,
-  SessionProfile
+  SessionProfile,
+  Login
 }

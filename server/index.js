@@ -9,6 +9,8 @@ import routes from './controllers'
 const app = express()
 const port = process.env.PORT || 4000
 
+import session from 'express-session'
+
 // Development Mode
 
 if (process.env.NODE_ENV === 'development') {
@@ -52,6 +54,12 @@ app.use(compression({ level: 9, threshold: 0, filter: () => true }))
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(bodyParser.urlencoded({ limit: '1mb', extended: false }))
 app.use('/static', express.static('./build'))
+
+app.use(session({
+  secret: 'aryes secret',
+  resave: false,
+  saveUninitialized: true
+}))
 
 // Routes
 
