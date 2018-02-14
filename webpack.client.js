@@ -1,27 +1,26 @@
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const { join, resolve } = require('path');
-const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const { join, resolve } = require('path')
+const webpack = require('webpack')
 
-const env = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const env = process.env.NODE_ENV === 'production' ? 'production' : 'development'
 
 const config = {
-  devtool: env === 'production' ? 'source-map' : 'eval',
+  devtool: env === 'production' ? 'source-map' : 'inline-source-map',
   context: resolve(__dirname, 'client'),
   entry: {
     main: env === 'production' ? [
       'babel-polyfill',
-      './scripts',
+      './'
     ] : [
       'babel-polyfill',
       'webpack-hot-middleware/client',
-      './scripts',
-    ],
-    style: './styles/style.scss',
+      './'
+    ]
   },
   output: {
     path: join(__dirname, 'build'),
     filename: 'scripts/[name].js',
-    publicPath: '/static',
+    publicPath: '/static'
   },
   resolve: {
     extensions: [
@@ -29,12 +28,16 @@ const config = {
       '.scss',
       '.css',
       '.js',
-      '.jsx',
+      '.jsx'
     ],
     modules: [
       'client',
-      'node_modules',
+      'node_modules'
     ],
+    alias: {
+      animate: resolve(__dirname, 'node_modules/animate.css/animate.css'),
+      fontAwesome: resolve(__dirname, 'node_modules/font-awesome/css/font-awesome.css')
+    }
   },
   module: {
     loaders: [
@@ -42,47 +45,46 @@ const config = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         loaders: env === 'production' ? [
-          'babel-loader',
+          'babel-loader'
         ] : [
           'react-hot-loader/webpack',
-          'babel-loader',
-        ],
+          'babel-loader'
+        ]
       }, {
         test: /(\.s?css)$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?minimize', 'sass-loader'),
+        loader: env === 'production' ? ExtractTextPlugin.extract('style-loader', 'css-loader?minimize&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]', 'sass-loader') : 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass-loader'
       }, {
         test: /\.(jpe?g|png|svg)$/,
-        loader: 'file-loader?name=/assets/images/[name].[ext]',
+        loader: 'file-loader?name=/assets/images/[name].[ext]'
       }, {
         test: /\.(ttf|eot|woff|woff2)$/,
-        loader: 'file-loader?name=/assets/fonts/[name].[ext]',
+        loader: 'file-loader?name=/assets/fonts/[name].[ext]'
       }, {
         test: /\.json$/,
-        loader: 'json-loader',
-      },
-    ],
+        loader: 'json-loader'
+      }
+    ]
   },
   plugins: env === 'production' ? [
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false },
       comments: false,
-      sourceMap: false,
+      sourceMap: false
     }),
     new ExtractTextPlugin('styles/[name].css'),
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({ 'process.env': {
-      NODE_ENV: JSON.stringify(env),
-    } }),
+      NODE_ENV: JSON.stringify(env)
+    } })
   ] : [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.CommonsChunkPlugin('scripts/commons.js'),
-    new ExtractTextPlugin('styles/[name].css'),
     new webpack.DefinePlugin({ 'process.env': {
-      NODE_ENV: JSON.stringify(env),
-    } }),
-  ],
-};
+      NODE_ENV: JSON.stringify(env)
+    } })
+  ]
+}
 
-module.exports = config;
+module.exports = config
