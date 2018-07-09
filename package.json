@@ -4,6 +4,7 @@
   "description": "An Educational institution management system",
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon ./server --watch ./server --exec babel-node",
+    "prod:start": "node ./build/scripts/server.bundle.js",
     "build:client": "cross-env NODE_ENV=production webpack --config webpack.client.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.server.js",
     "build": "npm run build:client && npm run build:server",
