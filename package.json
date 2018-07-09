@@ -70,7 +70,7 @@
     "babel-preset-stage-3": "6.17.0",
     "cross-env": "3.1.4",
     "css-loader": "0.26.1",
-    "dotenv": "2.0.0",
+    "dotenv": "^6.0.0",
     "file-loader": "0.9.0",
     "jest": "^18.1.0",
     "json-loader": "0.5.4",

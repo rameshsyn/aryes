@@ -1,7 +1,5 @@
+require("dotenv").config();
 import mongoose from 'mongoose'
-
-// Configuration
-import config from '../config/index.json'
 
 // mongoose schemas
 import student from '../controllers/management/student/student_model'
@@ -19,7 +17,7 @@ import expenditureTypes from '../controllers/institution/expenditure_type/expend
 import expenditure from '../controllers/accounting/expenditure/expenditure_model'
 
 // MongoDB connection
-mongoose.connect(`mongodb://localhost:27017/${config.db.name}`)
+mongoose.connect(process.env.MONGODB_URL);
 
 // Use native promises
 mongoose.Promise = global.Promise
