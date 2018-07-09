@@ -17,3 +17,5 @@ coverage
 
 # build
 build
+
+.env
